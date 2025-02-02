@@ -8,6 +8,8 @@ import About from "./components/About";
 import Prices from "./components/Prices";
 import Reviews from "./components/Reviews";
 import Gallery from "./components/Gallery";
+import Faq from "./components/Faq";
+import Contact from "./components/Contact";
 
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
                 <Route path="/reviews" element={<Reviews />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/booking" element={<Booking />} />
+                <Route path="/faq" element={<Faq/>} />
+                <Route path="/contact" element={<Contact/>} />
             </Routes>
         </Router>
     );

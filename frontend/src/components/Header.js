@@ -15,7 +15,7 @@ const Header = () => {
                     <li><Link to="/tracks" className="menu-button">Pályák és foglalás</Link></li>
                     <li><Link to="/prices" className="menu-button">Árak</Link></li>
                     <li><Link to="/reviews" className="menu-button">Vélemények</Link></li>
-                    <li><Link to="/faq" className="menu-button">Gyakori kérdések</Link></li>
+                    <li><Link to="/faq" className="menu-button">Gyakoran Ismételt Kérdések</Link></li>
                     <li><Link to="/contact" className="menu-button">Kapcsolat</Link></li>
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
                 </ul>
