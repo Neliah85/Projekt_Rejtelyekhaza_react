@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Booking from "./components/Booking";
 import TracksPage from "./components/TracksPage";
 import Track from "./components/Track";
+import About from "./components/About";
 
 function App() {
     return (
@@ -12,7 +13,8 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/booking/:id" element={<Booking />} />
                 <Route path="/tracks" element={<TracksPage />} />
-                <Route path="/tracks/:id" element={<Track />} /> {/* Egyedi pályaoldal */}
+                <Route path="/tracks/:id" element={<Track />} />
+                <Route path="/about" element={<About />} /> 
             </Routes>
         </Router>
     );

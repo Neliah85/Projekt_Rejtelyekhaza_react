@@ -56,7 +56,7 @@ header {
     font-family: "Roboto Mono", sans-serif;
     font-size: 18px;
     font-weight: bold;
-    padding: 10px 15px;
+    padding: 5px 10px;
     border-radius: 15px;
     transition: background 0.3s;
 }
@@ -82,7 +82,7 @@ header {
     font-family: "Roboto Mono", sans-serif;
     font-size: 18px;
     font-weight: bold;
-    padding: 10px 15px;
+    padding: 5px 10px;
     border-radius: 15px;
     transition: background 0.3s, transform 0.2s;
     border: 2px solid transparent;
@@ -158,6 +158,20 @@ figure {
     text-align: center; /* Középre igazítja a feliratot */
 }
 
+/* Rólunk oldal stílus */
+.about-container {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #FFFCFC;
+}
+
+.placeholder-text {
+    font-size: 18px;
+    color: #888;
+    font-style: italic;
+}
 
 /* Kapcsolat oldal stílusai */
 .contact-info, .contact-form {

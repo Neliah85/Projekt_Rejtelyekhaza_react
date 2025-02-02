@@ -11,6 +11,7 @@ const Header = () => {
                 </Link>
                 <ul className="menu">
                     <li><Link to="/" className="menu-button">Főoldal</Link></li>
+                    <li><Link to="/about" className="menu-button">Rólunk</Link></li>
                     <li><Link to="/tracks" className="menu-button">Pályák és foglalás</Link></li>
                     <li><Link to="/prices" className="menu-button">Árak</Link></li>
                     <li><Link to="/reviews" className="menu-button">Vélemények</Link></li>
