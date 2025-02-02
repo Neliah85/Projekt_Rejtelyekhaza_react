@@ -7,7 +7,8 @@ import Track from "./components/Track";
 import About from "./components/About";
 import Prices from "./components/Prices";
 import Reviews from "./components/Reviews";
-import Gallery from "./components/Gallery"; // Galéria oldal
+import Gallery from "./components/Gallery";
+
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/prices" element={<Prices />} />
                 <Route path="/reviews" element={<Reviews />} />
                 <Route path="/gallery" element={<Gallery />} />
+                <Route path="/booking" element={<Booking />} />
             </Routes>
         </Router>
     );
