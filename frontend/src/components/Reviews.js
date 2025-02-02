@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-// Pályák listája (szoba választóhoz)
+// Pályák listája
 const tracks = [
     "Menekülés az iskolából",
     "A pedellus bosszúja",
@@ -15,18 +15,20 @@ const tracks = [
     "Titkok Labirintusa"
 ];
 
-// Véletlenszerű szoba választás egy meglévő véleményhez
-const getRandomTrack = () => tracks[Math.floor(Math.random() * tracks.length)];
-
-// Alapértelmezett vélemények (random szobákkal)
+// Alapértelmezett vélemények (kézzel hozzárendelt szobákkal)
 const defaultReviews = [
-    { name: "Zoli92 - Menekülés az iskolából", rating: 5, text: "Fantasztikus élmény volt! Nagyon izgalmas feladatok és szuper díszletek!", escaped: true, track: getRandomTrack() },
-    { name: "AnitaK - Kalandok Kamrája", rating: 4, text: "Nagyon élveztem, bár az utolsó feladat kifogott rajtunk!", escaped: false, track: getRandomTrack() },
-    { name: "CsapatBajnok - KódX Szoba", rating: 5, text: "A csapatmunka kulcsfontosságú volt, fantasztikus kihívás volt!", escaped: true, track: getRandomTrack() },
-    { name: "LauraM - Időcsapda", rating: 4, text: "Izgalmas feladatok, barátságos játékmesterek. Egy picit több idő jól jött volna!", escaped: false, track: getRandomTrack() },
-    { name: "Gábor33 - Időcsapda", rating: 5, text: "Életem egyik legjobb szabadulószoba élménye!", escaped: true, track: getRandomTrack() },
-    { name: "Noémi86 - Szabadulás Kódja", rating: 5, text: "Csodálatos élmény, tökéletesen kidolgozott szobák!", escaped: true, track: getRandomTrack() },
-    { name: "David_T - Menekülés az iskolából", rating: 4, text: "Nagyon jól szórakoztunk, de az egyik rejtvény kicsit nehéz volt számunkra.", escaped: false, track: getRandomTrack() },
+    { name: "Zoli92", rating: 5, text: "Fantasztikus élmény volt! Nagyon izgalmas feladatok és szuper díszletek!", escaped: true, track: "Menekülés az iskolából" },
+    { name: "AnitaK", rating: 4, text: "Nagyon élveztem, bár az utolsó feladat kifogott rajtunk!", escaped: false, track: "A pedellus bosszúja" },
+    { name: "CsapatBajnok", rating: 5, text: "A csapatmunka kulcsfontosságú volt, fantasztikus kihívás volt!", escaped: true, track: "A tanári titkai" },
+    { name: "LauraM", rating: 4, text: "Izgalmas feladatok, barátságos játékmesterek. Egy picit több idő jól jött volna!", escaped: false, track: "A takarítónő visszanéz" },
+    { name: "Gábor33", rating: 5, text: "Életem egyik legjobb szabadulószoba élménye!", escaped: true, track: "Szabadulás Kódja" },
+    { name: "Noémi86", rating: 5, text: "Csodálatos élmény, tökéletesen kidolgozott szobák!", escaped: true, track: "Időcsapda" },
+    { name: "David_T", rating: 4, text: "Nagyon jól szórakoztunk, de az egyik rejtvény kicsit nehéz volt számunkra.", escaped: false, track: "KódX Szoba" },
+    { name: "MysteryLover", rating: 5, text: "Nagyon szeretem a rejtélyeket, és ez a hely tökéletes volt!", escaped: true, track: "Kalandok Kamrája" },
+    { name: "CsillaR", rating: 4, text: "Nagyon ötletes pályák, baráti társasággal szuper élmény volt.", escaped: true, track: "Titkok Labirintusa" },
+    { name: "Marci17", rating: 5, text: "Érdekes rejtvények, gyönyörű környezet. Mindenkinek ajánlom!", escaped: true, track: "Menekülés az iskolából" },
+    { name: "JaniMega", rating: 5, text: "Meglepetések és izgalmak mindenhol! Mindenképpen visszajövünk!", escaped: true, track: "A pedellus bosszúja" },
+    { name: "LillaS", rating: 4, text: "Jó pályák, de egy kis extra segítség néha jól jött volna.", escaped: false, track: "A tanári titkai" },
 ];
 
 const getStars = (rating) => "⭐".repeat(rating) + "☆".repeat(5 - rating);
