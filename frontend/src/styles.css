@@ -84,6 +84,101 @@ main {
     background-color: #A83D30;
 }
 
+/* Bejelentkezés és Regisztráció oldalak */
+.auth-container {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 400px;
+    margin: 100px auto;
+    background: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Formázás a beviteli mezőkhöz */
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Középre igazítja a mezőket */
+    gap: 15px;
+    width: 100%;
+}
+
+/* Label stílus */
+.auth-container label {
+    font-weight: bold;
+    color: white;
+    text-align: left;
+    width: 100%;
+}
+
+/* Beviteli mezők */
+.auth-container input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    width: 90%;
+    text-align: left;
+}
+
+/* Kisebb gombméret és középre igazítás */
+.auth-container button {
+    background-color: #CF5443;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    transition: background 0.3s;
+    width: 50%;
+}
+
+.auth-container button:hover {
+    background-color: #A83D30;
+}
+
+/* Hibajelzés */
+.error {
+    color: red;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* Felugró üzenet */
+.popup {
+    background: #444;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Jelszó mezők konténere */
+.password-container {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    position: relative;
+}
+
+/* Jelszó mutatás/elrejtés gomb */
+.toggle-password {
+    background: none;    
+    border: none;
+    cursor: pointer;
+    font-size: 14px; /* Kisebb méret */
+    position: absolute;
+    right: 0px; /* Sor végére igazítás */
+    color: white;
+    padding: px;
+}
 /* Gombok hover és kattintási animációja */
 .menu-button:hover {
     background-color: #A83D30;
@@ -934,78 +1029,3 @@ p {
     background-color: #A83D30;
 }
 
-/* Bejelentkezés és Regisztráció oldalak */
-.auth-container {
-    text-align: center;
-    padding: 50px 20px;
-    max-width: 400px;
-    margin: 100px auto;
-    background: #222;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Formázás a beviteli mezőkhöz */
-.auth-container form {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Középre igazítja a mezőket */
-    gap: 15px;
-    width: 100%;
-}
-
-/* Label stílus */
-.auth-container label {
-    font-weight: bold;
-    color: white;
-    text-align: left;
-    width: 100%;
-}
-
-/* Beviteli mezők */
-.auth-container input {
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-    width: 90%;
-    text-align: left;
-}
-
-/* Kisebb gombméret és középre igazítás */
-.auth-container button {
-    background-color: #CF5443;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    border: none;
-    transition: background 0.3s;
-    width: 50%;
-}
-
-.auth-container button:hover {
-    background-color: #A83D30;
-}
-
-/* Hibajelzés */
-.error {
-    color: red;
-    font-size: 14px;
-    margin: 5px 0;
-}
-
-/* Felugró üzenet */
-.popup {
-    background: #444;
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 50%;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-}

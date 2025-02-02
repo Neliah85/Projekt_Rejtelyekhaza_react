@@ -4,11 +4,13 @@ import Footer from "./Footer";
 
 const Register = () => {
     const [username, setUsername] = useState("");
-    const [teamName, setTeamName] = useState(""); // Csapatnév
+    const [teamName, setTeamName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState(""); // Jelszó megerősítés
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [phoneError, setPhoneError] = useState("");
     const [passwordError, setPasswordError] = useState("");
@@ -16,22 +18,13 @@ const Register = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     // Email validáció
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,3}$/;
-        return emailRegex.test(email);
-    };
+    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,3}$/.test(email);
 
     // Magyar telefonszám validáció
-    const validatePhone = (phone) => {
-        const phoneRegex = /^(?:\+36|06)[\s-]?(?:1|20|30|31|32|50|70|90)[\s-]?\d{3}[\s-]?\d{4}$/;
-        return phoneRegex.test(phone);
-    };
+    const validatePhone = (phone) => /^(?:\+36|06)[\s-]?(?:1|20|30|31|32|50|70|90)[\s-]?\d{3}[\s-]?\d{4}$/.test(phone);
 
-    // Jelszó validáció (minimum 6 karakter, kis- és nagybetű, szám, speciális karakter (!=-;.,))
-    const validatePassword = (password) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!=\-;.,]).{6,}$/;
-        return passwordRegex.test(password);
-    };
+    // Jelszó validáció
+    const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!=\-;.,]).{6,}$/.test(password);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -98,11 +91,31 @@ const Register = () => {
                     {phoneError && <p className="error">{phoneError}</p>}
 
                     <label>Jelszó:</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <div className="password-container">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required 
+                        />
+                        <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? "🙈" : "👁️"}
+                        </button>
+                    </div>
                     {passwordError && <p className="error">{passwordError}</p>}
 
                     <label>Jelszó megerősítése:</label>
-                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                    <div className="password-container">
+                        <input 
+                            type={showConfirmPassword ? "text" : "password"} 
+                            value={confirmPassword} 
+                            onChange={(e) => setConfirmPassword(e.target.value)} 
+                            required 
+                        />
+                        <button type="button" className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            {showConfirmPassword ? "🙈" : "👁️"}
+                        </button>
+                    </div>
                     {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}
 
                     <button type="submit">Regisztráció</button>
