@@ -7,13 +7,15 @@ body {
     margin: 0;
     padding: 0;
     background-color: #585555;
-    padding-top: 80px;
+    padding-top: 100px;
     
     
 }
 
-.about-container h2 {
-    margin-top: 100px;
+
+
+main {
+    padding-top: 100px; /* A fejléc alá tolja az egész tartalmat */
 }
 
 /* Fejléc és menü */
@@ -96,7 +98,7 @@ body {
     transition: background 0.3s, transform 0.2s;
     border: 2px solid transparent;
 }
-/* Slideshow */
+
 /* Slideshow */
 .slideshow {
     position: relative;
@@ -126,7 +128,7 @@ body {
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.6);
     color: white;
-    padding: 10px 15px;
+    padding: 20px 15px;
     border-radius: 5px;
     font-size: 18px;
     font-weight: bold;

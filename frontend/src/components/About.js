@@ -7,7 +7,7 @@ const About = () => {
         <>
             <Header />
             <main className="about-container">
-                <h2><b>Rólunk</b></h2>
+                <h1><b>Rólunk</b></h1>
                 <p className="placeholder-text">
                 <p>
                 A Rejtélyek Háza szabadulószoba 2023-ban nyitotta meg kapuit a titkok és kihívások szerelmesei előtt, és azóta is töretlen népszerűségnek örvend. A szoba megalkotásánál egyetlen cél vezérelt minket: felejthetetlen élményt nyújtani minden korosztálynak, akik szeretik próbára tenni logikájukat, bátorságukat és csapatmunkájukat. Az elmúlt időszakban már több ezer látogató mérettette meg magát, és a visszajelzések alapján elmondhatjuk, hogy sikerült megteremteni azt a különleges atmoszférát, amitől a Rejtélyek Háza egyedivé válik.

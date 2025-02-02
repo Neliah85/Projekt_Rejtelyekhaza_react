@@ -30,7 +30,8 @@ const TracksPage = () => {
         <>
             <Header />
             <main>
-                <h2>Pályák és Foglalás</h2>
+                <h1>Pályák és Foglalás</h1>
+                
                 <p>Válaszd ki a számodra legizgalmasabb pályát, és kezdődjön a kaland!</p>
 
                 <div className="tracks-list">
