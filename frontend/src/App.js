@@ -10,6 +10,8 @@ import Reviews from "./components/Reviews";
 import Gallery from "./components/Gallery";
 import Faq from "./components/Faq";
 import Contact from "./components/Contact";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/faq" element={<Faq/>} />
                 <Route path="/contact" element={<Contact/>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
             </Routes>
         </Router>
     );

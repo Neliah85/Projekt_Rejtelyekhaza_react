@@ -20,6 +20,12 @@ const Header = () => {
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
                 </ul>
             </nav>
+
+            {/* Belépés és Regisztráció gombok */}
+            <div className="auth-buttons">
+                <Link to="/login" className="login-button">Belépés</Link>
+                <Link to="/register" className="register-button">Regisztráció</Link>
+            </div>
         </header>
     );
 };
