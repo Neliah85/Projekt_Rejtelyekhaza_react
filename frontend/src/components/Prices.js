@@ -43,7 +43,10 @@ const Prices = () => {
                 </table>
                 <p className="small-text">A feltüntetett árak forintban értendőek és az Áfát tartalmazzák!</p>
                 <p className="group-pricing">
-                    <strong>Nagy csoportok, cégek esetén, kérj egyedi ajánlatot a <a href="/contact">Kapcsolat</a> oldalon!</strong>
+                    <strong>Nagy csoportok, cégek esetén, kérj egyedi ajánlatot a <a href="/contact">Kapcsolat</a> oldalon!</strong>                    
+                </p>
+                <p>
+                <strong>Máris foglalnál? Ezt könnyen megteheted <a href="/tracks">Itt</a>!</strong>
                 </p>
             </main>
             <Footer />
