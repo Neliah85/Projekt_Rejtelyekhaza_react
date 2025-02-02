@@ -6,7 +6,8 @@ import TracksPage from "./components/TracksPage";
 import Track from "./components/Track";
 import About from "./components/About";
 import Prices from "./components/Prices";
-import Reviews from "./components/Reviews"; // Vélemények oldal
+import Reviews from "./components/Reviews";
+import Gallery from "./components/Gallery"; // Galéria oldal
 
 function App() {
     return (
@@ -18,7 +19,8 @@ function App() {
                 <Route path="/tracks/:id" element={<Track />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/prices" element={<Prices />} />
-                <Route path="/reviews" element={<Reviews />} /> {/* Vélemények oldal */}
+                <Route path="/reviews" element={<Reviews />} />
+                <Route path="/gallery" element={<Gallery />} />
             </Routes>
         </Router>
     );
