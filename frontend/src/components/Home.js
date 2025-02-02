@@ -16,7 +16,7 @@ const Home = () => {
                     {[...Array(9).keys()].map((i) => (
                         <figure key={i}>
                             <a href={`/palya${i + 1}`}>
-                                <img src={`/image/palya${i + 1}.jpg`} alt={`Pálya ${i + 1}`} width="320" height="233"/>
+                                <img src={`/images/palya${i + 1}.jpg`} alt={`Pálya ${i + 1}`} width="320" height="233"/>
                             </a>
                             <figcaption>Pálya {i + 1}</figcaption>
                         </figure>
