@@ -47,6 +47,12 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+h2{
+    text-align: center;
+    margin-top: 30;
+    color: #f7d765;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 p{
     text-align: center;
     margin-left: 30px;
