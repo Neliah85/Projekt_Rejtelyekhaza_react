@@ -13,38 +13,87 @@ body {
 
 /* Fejléc és menü */
 header {
-    background-color: #333;
-    color: #8c6e6e;
-    padding: 30px 0;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
-    
+    background-color: #181515;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+   
+}
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Az elemeket balra rendezi */
+    width: 100%;
+    max-width: 1200px;
+    padding-left: 0; 
 }
 
+
+.logo {
+    height: 60px;
+    width: auto;
+    cursor: pointer;
+    margin-left: 0; 
+    padding-left: 20px;
+}
+
+
 .menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
 }
 
 .menu li {
     display: inline;
-    margin: 0 15px;
 }
 
 .menu a {
-    color: #f84444;
+    color: #FFFCFC;
     text-decoration: none;
+    font-family: "Roboto Mono", sans-serif;
     font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 15px;
+    transition: background 0.3s;
+}
+
+/* Gombok hover és kattintási animációja */
+.menu-button:hover {
+    background-color: #A83D30;
+    border: 2px solid #FFFCFC;
+    transform: scale(1.05);
+}
+
+/* Gombok aktív állapotban (kattintáskor) */
+.menu-button:active {
+    background-color: #8F3226;
+    transform: scale(0.95);
+}
+
+.menu-button {
+    display: inline-block;
+    background-color: #CF5443;
+    color: #FFFCFC;
+    text-decoration: none;
+    font-family: "Roboto Mono", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 15px;
+    transition: background 0.3s, transform 0.2s;
+    border: 2px solid transparent;
 }
 
 /* Főoldali cím */
 h1 {
     text-align: center;
-    margin-top: 50px;
-    color: #f7d765;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-top: 60px;
+    color: #ff0000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 h2{
@@ -52,6 +101,13 @@ h2{
     margin-top: 30;
     color: #f7d765;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h3{
+    text-align: center;
+    margin-top: 20px;
+    color: #ff0000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 p{
     text-align: center;
@@ -64,6 +120,8 @@ p{
     
 }
 
+
+
 /* Pályák táblázata a főoldalon */
 .tracks-grid {
     display: grid;
@@ -74,8 +132,8 @@ p{
 }
 
 .tracks-grid img {
-    width: 250px;
-    height: auto;    
+    width: 320;
+    height: 200;    
     cursor: pointer;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -85,6 +143,15 @@ p{
 .tracks-grid img:hover {
     transform: scale(1.05);
 }
+.tracks-grid figcaption {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;   
+    background-color: rgba(0, 0, 0, 0.5); /* Átlátszó háttér */
+    padding: 5px;
+    border-radius: 5px;
+}
+
 
 figure {
     margin: 0;
@@ -206,6 +273,59 @@ footer {
 .calendar-section li {
     margin-bottom: 10px;
 }
+
+.tracks-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+.track-item {
+    background: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.track-item img {
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.track-item img:hover {
+    transform: scale(1.05);
+}
+
+.track-item h2 {
+    margin: 10px 0;
+}
+
+.track-item p {
+    font-size: 16px;
+    color: #ccc;
+}
+
+.button {
+    display: inline-block;
+    background-color: #f84444;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background-color: #d12c2c;
+}
+
+
 /*datamanagement formázás */
 body {
     font-family: Arial, sans-serif;

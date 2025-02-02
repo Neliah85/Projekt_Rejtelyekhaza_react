@@ -1,18 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.png"; // Logó importálása
 
 const Header = () => {
     return (
-        <header>
-            <nav>
+        <header className="header">
+            <nav className="nav-container">
+                <Link to="/">
+                    <img src={logo} alt="Rejtélyek Háza Logó" className="logo" />
+                </Link>
                 <ul className="menu">
-                    <li><Link to="/">Főoldal</Link></li>
-                    <li><Link to="/tracks">Pályák és foglalás</Link></li>
-                    <li><Link to="/prices">Árak</Link></li>
-                    <li><Link to="/reviews">Vélemények</Link></li>
-                    <li><Link to="/faq">Gyakori kérdések</Link></li>
-                    <li><Link to="/contact">Kapcsolat</Link></li>
-                    <li><Link to="/gallery">Galéria</Link></li>
+                    <li><Link to="/" className="menu-button">Főoldal</Link></li>
+                    <li><Link to="/tracks" className="menu-button">Pályák és foglalás</Link></li>
+                    <li><Link to="/prices" className="menu-button">Árak</Link></li>
+                    <li><Link to="/reviews" className="menu-button">Vélemények</Link></li>
+                    <li><Link to="/faq" className="menu-button">Gyakori kérdések</Link></li>
+                    <li><Link to="/contact" className="menu-button">Kapcsolat</Link></li>
+                    <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
                 </ul>
             </nav>
         </header>
