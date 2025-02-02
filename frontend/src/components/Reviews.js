@@ -15,7 +15,7 @@ const tracks = [
     "Titkok Labirintusa"
 ];
 
-// Alapértelmezett vélemények (kézzel hozzárendelt szobákkal)
+// Alapértelmezett vélemények (csak ha a localStorage üres)
 const defaultReviews = [
     { name: "Zoli92", rating: 5, text: "Fantasztikus élmény volt! Nagyon izgalmas feladatok és szuper díszletek!", escaped: true, track: "Menekülés az iskolából" },
     { name: "AnitaK", rating: 4, text: "Nagyon élveztem, bár az utolsó feladat kifogott rajtunk!", escaped: false, track: "A pedellus bosszúja" },
@@ -24,22 +24,23 @@ const defaultReviews = [
     { name: "Gábor33", rating: 5, text: "Életem egyik legjobb szabadulószoba élménye!", escaped: true, track: "Szabadulás Kódja" },
     { name: "Noémi86", rating: 5, text: "Csodálatos élmény, tökéletesen kidolgozott szobák!", escaped: true, track: "Időcsapda" },
     { name: "David_T", rating: 4, text: "Nagyon jól szórakoztunk, de az egyik rejtvény kicsit nehéz volt számunkra.", escaped: false, track: "KódX Szoba" },
-    { name: "MysteryLover", rating: 5, text: "Nagyon szeretem a rejtélyeket, és ez a hely tökéletes volt!", escaped: true, track: "Kalandok Kamrája" },
-    { name: "CsillaR", rating: 4, text: "Nagyon ötletes pályák, baráti társasággal szuper élmény volt.", escaped: true, track: "Titkok Labirintusa" },
-    { name: "Marci17", rating: 5, text: "Érdekes rejtvények, gyönyörű környezet. Mindenkinek ajánlom!", escaped: true, track: "Menekülés az iskolából" },
-    { name: "JaniMega", rating: 5, text: "Meglepetések és izgalmak mindenhol! Mindenképpen visszajövünk!", escaped: true, track: "A pedellus bosszúja" },
-    { name: "LillaS", rating: 4, text: "Jó pályák, de egy kis extra segítség néha jól jött volna.", escaped: false, track: "A tanári titkai" },
 ];
 
+// Csillagok generálása
 const getStars = (rating) => "⭐".repeat(rating) + "☆".repeat(5 - rating);
 
 const Reviews = () => {
     const [reviews, setReviews] = useState([]);
 
-    // Betöltéskor ellenőrizzük a localStorage-t
+    // Betöltéskor ellenőrizzük a localStorage-t, és csak ha üres, akkor töltjük be az alapértelmezett véleményeket
     useEffect(() => {
-        const storedReviews = JSON.parse(localStorage.getItem("reviews")) || defaultReviews;
-        setReviews(storedReviews);
+        const storedReviews = JSON.parse(localStorage.getItem("reviews"));
+        if (storedReviews && storedReviews.length > 0) {
+            setReviews(storedReviews);
+        } else {
+            setReviews(defaultReviews);
+            localStorage.setItem("reviews", JSON.stringify(defaultReviews));
+        }
     }, []);
 
     // Új vélemény beküldése
