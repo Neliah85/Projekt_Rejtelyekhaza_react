@@ -5,6 +5,7 @@ import Booking from "./components/Booking";
 import TracksPage from "./components/TracksPage";
 import Track from "./components/Track";
 import About from "./components/About";
+import Prices from "./components/Prices"; // Árlista oldal
 
 function App() {
     return (
@@ -14,7 +15,8 @@ function App() {
                 <Route path="/booking/:id" element={<Booking />} />
                 <Route path="/tracks" element={<TracksPage />} />
                 <Route path="/tracks/:id" element={<Track />} />
-                <Route path="/about" element={<About />} /> 
+                <Route path="/about" element={<About />} />
+                <Route path="/prices" element={<Prices />} /> {/* Árak oldal */}
             </Routes>
         </Router>
     );
