@@ -4,13 +4,15 @@ import Footer from "./Footer";
 
 const Register = () => {
     const [username, setUsername] = useState("");
-    const [teamname, setTeamname] = useState("");
+    const [teamName, setTeamName] = useState(""); // Csapatnév
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState(""); // Jelszó megerősítés
     const [emailError, setEmailError] = useState("");
     const [phoneError, setPhoneError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     // Email validáció
@@ -56,14 +58,22 @@ const Register = () => {
             setPasswordError("");
         }
 
+        if (password !== confirmPassword) {
+            setConfirmPasswordError("A két jelszó nem egyezik meg!");
+            isValid = false;
+        } else {
+            setConfirmPasswordError("");
+        }
+
         if (isValid) {
             setFormSubmitted(true);
             setTimeout(() => setFormSubmitted(false), 3000);
             setUsername("");
-            setTeamname("");
+            setTeamName("");
             setEmail("");
             setPhone("");
             setPassword("");
+            setConfirmPassword("");
         }
     };
 
@@ -77,7 +87,7 @@ const Register = () => {
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
 
                     <label>Csapatnév:</label>
-                    <input type="text" value={teamname} onChange={(e) => setTeamname(e.target.value)} required />
+                    <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required />
 
                     <label>Email:</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
@@ -90,6 +100,10 @@ const Register = () => {
                     <label>Jelszó:</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     {passwordError && <p className="error">{passwordError}</p>}
+
+                    <label>Jelszó megerősítése:</label>
+                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                    {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}
 
                     <button type="submit">Regisztráció</button>
                 </form>
