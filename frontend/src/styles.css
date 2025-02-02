@@ -1,6 +1,7 @@
 /* Alapvető stílusok */
 body {
-    background-image: url("/images/header.jpg");
+   
+    background-image: url("/images/header.jpg");       
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: 0;
     padding: 0;
