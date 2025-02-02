@@ -7,21 +7,26 @@ body {
     margin: 0;
     padding: 0;
     background-color: #585555;
+    padding-top: 80px;
     
     
 }
 
 /* Fejléc és menü */
-header {
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: #181515;
     padding: 15px 0;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    
-   
+    z-index: 1000;
 }
+
 .nav-container {
     display: flex;
     align-items: center;
@@ -87,6 +92,44 @@ header {
     transition: background 0.3s, transform 0.2s;
     border: 2px solid transparent;
 }
+/* Slideshow */
+/* Slideshow */
+.slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 350px; /* Rögzített magasság */
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Slideshow képek */
+.slide-image {
+    width: 100%;
+    height: 100%; /* Kitölti a teljes slideshow dobozt */
+    object-fit: cover; /* Arányos méretezés, hogy a képek ne torzuljanak */
+    display: block;
+    border-radius: 10px;
+}
+
+/* Szöveg a kép alatt */
+.slide-text {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    max-width: 90%;
+}
+
 
 /* Főoldali cím */
 h1 {
