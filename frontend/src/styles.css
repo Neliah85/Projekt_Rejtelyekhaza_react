@@ -558,3 +558,99 @@ p {
     font-weight: bold;
     margin-top: 5px;
 }
+
+/* Vélemények oldal stílus */
+.reviews-container {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #FFFCFC;
+}
+
+/* Vélemények lista */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Egyedi vélemény elem */
+.review-item {
+    background: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid #CF5443;
+}
+
+/* Csillagok stílusa */
+.stars {
+    font-size: 20px;
+    color: #FFD700; /* Arany csillagok */
+}
+
+/* Vélemény szöveg */
+.review-text {
+    font-size: 16px;
+    color: #ccc;
+    font-style: italic;
+}
+
+/* Kijutási információ */
+.escaped {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Vélemény beküldő űrlap */
+.review-form {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.review-form input, .review-form textarea, .review-form select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+}
+
+.review-form textarea {
+    height: 80px;
+}
+
+.review-form button {
+    background-color: #CF5443;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    transition: background 0.3s;
+}
+
+.review-form button:hover {
+    background-color: #A83D30;
+}
+
+/* Rádiógombok */
+.radio-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.radio-buttons label {
+    cursor: pointer;
+}
+
