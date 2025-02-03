@@ -160,33 +160,33 @@ main {
     text-align: center;
 }
 
-/* Jelszó mező és ikon egy sorban */
-.password-container {
-    position: relative;
-    width: 100%;
+/* Jelszó mező és ikon elrendezése */
+.password-wrapper {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 /* Jelszó mező */
-.password-container input {
-    width: 100%;
-    padding-right: 30px; /* Helyet hagyunk a szem ikonnak */
+.password-wrapper input {
+    flex: 300%;  /* Kitölti a rendelkezésre álló helyet */
+    padding-right: 40px; /* Kicsit beljebb hozzuk a szöveget, hogy ne érjen a gombhoz */
 }
 
-/* Szem ikon */
+/* Szem ikon teljesen kívül, jobb oldalon */
 .toggle-password {
-    position: absolute;
-    right: 0px;
-    background: none !important;  /* Kikapcsolja az örökölt háttérszínt */
-    border: none !important; /* Kikapcsolja az esetleges örökölt keretet */
-    padding: 0 !important; /* Nincs extra padding */
-    width: auto; /* Csak az ikon méretéhez igazodik */
-    height: auto; /* Ne legyen nagyobb, mint kell */
+    background: none !important;
+    border: none !important;
+    padding: 5px 10px; /* Kicsit beljebb igazítjuk */
+    width: auto;
+    height: auto;
     cursor: pointer;
-    font-size: 14px; /* Kisebb ikonméret */
+    font-size: 14px; 
     color: white;
-    display: inline-block; /* Nem flex, csak simán inline */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* Térköz a beviteli mező és az ikon között */
 }
 
 /* Gombok hover és kattintási animációja */

@@ -91,7 +91,7 @@ const Register = () => {
                     {phoneError && <p className="error">{phoneError}</p>}
 
                     <label>Jelszó:</label>
-                    <div className="password-container">
+                    <div className="password-wrapper">
                         <input 
                             type={showPassword ? "text" : "password"} 
                             value={password} 
@@ -105,7 +105,7 @@ const Register = () => {
                     {passwordError && <p className="error">{passwordError}</p>}
 
                     <label>Jelszó megerősítése:</label>
-                    <div className="password-container">
+                    <div className="password-wrapper">
                         <input 
                             type={showConfirmPassword ? "text" : "password"} 
                             value={confirmPassword} 
