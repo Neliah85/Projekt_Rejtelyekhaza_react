@@ -1040,3 +1040,40 @@ p {
     background-color: #A83D30;
 }
 
+/* Szobák oldalainak stílusa */
+.track-container {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: white;
+}
+
+/* Szobák (pályák) címének eltolása a fejléc alá */
+.track-container h2 {
+    margin-top: 100px; /* Eltolja a címet a fejléc alól */
+}
+
+/* Szoba képek */
+.track-image {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+}
+
+/* Foglalás gomb */
+.button {
+    display: inline-block;
+    background-color: #f84444;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background-color: #d12c2c;
+}
