@@ -12,6 +12,7 @@ const Admin = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [bookings, setBookings] = useState([]);
     const [maintenanceMode, setMaintenanceMode] = useState({});
+    const [error, setError] = useState(""); // Hibaüzenet kezelése
 
     // Ellenőrizzük, hogy az admin be van-e jelentkezve
     useEffect(() => {
@@ -31,17 +32,23 @@ const Admin = () => {
             setTracks(response.data);
         } catch (error) {
             console.error("Hiba a pályák betöltésekor:", error);
+            setError("Nem sikerült betölteni a pályákat.");
         }
     };
 
     // Foglalások lekérése adott pályára és napra
     const fetchBookings = async () => {
-        if (!selectedTrack || !selectedDate) return;
+        if (!selectedTrack || !selectedDate) {
+            setError("Válassz ki egy pályát és egy dátumot!");
+            return;
+        }
+        setError(""); // Hibaüzenet törlése
         try {
             const response = await axios.get(`http://localhost:5001/bookings?track=${selectedTrack}&date=${selectedDate}`);
             setBookings(response.data);
         } catch (error) {
             console.error("Hiba a foglalások lekérdezésekor:", error);
+            setError("Nem sikerült lekérdezni a foglalásokat.");
         }
     };
 
@@ -52,6 +59,7 @@ const Admin = () => {
             setBookings(bookings.filter((booking) => booking.id !== bookingId));
         } catch (error) {
             console.error("Hiba a foglalás törlésekor:", error);
+            setError("Nem sikerült törölni a foglalást.");
         }
     };
 
@@ -68,17 +76,22 @@ const Admin = () => {
             <Header />
             <main className="admin-container">
                 <h1>Adminisztrációs felület</h1>
+                {error && <p className="error-message">{error}</p>}
 
                 <section className="track-management">
                     <h2>Pályakezelés</h2>
-                    {tracks.map((track) => (
-                        <div key={track.id} className="track-item">
-                            <h3>{track.name}</h3>
-                            <button onClick={() => toggleMaintenance(track.id)}>
-                                {maintenanceMode[track.id] ? "Karbantartás kikapcsolása" : "Karbantartás bekapcsolása"}
-                            </button>
-                        </div>
-                    ))}
+                    {tracks.length > 0 ? (
+                        tracks.map((track) => (
+                            <div key={track.id} className="track-item">
+                                <h3>{track.name}</h3>
+                                <button onClick={() => toggleMaintenance(track.id)}>
+                                    {maintenanceMode[track.id] ? "Karbantartás kikapcsolása" : "Karbantartás bekapcsolása"}
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Nincsenek elérhető pályák.</p>
+                    )}
                 </section>
 
                 <section className="booking-management">

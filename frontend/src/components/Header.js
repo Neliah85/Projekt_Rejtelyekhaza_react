@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.png"; // Logó importálása
 
 const Header = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const adminToken = localStorage.getItem("adminToken");
+        if (adminToken) {
+            setIsAdmin(true);
+        }
+    }, []);
+
     return (
         <header className="header">
             <nav className="nav-container">
@@ -15,9 +24,12 @@ const Header = () => {
                     <li><Link to="/tracks" className="menu-button">Pályák és foglalás</Link></li>
                     <li><Link to="/prices" className="menu-button">Árak</Link></li>
                     <li><Link to="/reviews" className="menu-button">Vélemények</Link></li>
-                    <li><Link to="/faq" className="menu-button">Gyakoran Ismételt Kérdések</Link></li>
+                    <li><Link to="/faq" className="menu-button">Gyakran Ismételt Kérdések</Link></li>
                     <li><Link to="/contact" className="menu-button">Kapcsolat</Link></li>
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
+
+                    {/* Admin menüpont csak bejelentkezett adminnak */}
+                    {isAdmin && <li><Link to="/admin" className="menu-button">Admin</Link></li>}
                 </ul>
             </nav>
 
