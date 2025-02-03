@@ -1090,15 +1090,112 @@ p {
 .button:hover {
     background-color: #d12c2c;
 }
-
-/* Admin oldal stílusai */
+/* ---- Admin konténer ---- */
 .admin-container {
-    text-align: center;
-    padding: 50px 20px;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
-    color: white;
+    padding: 20px;
+    text-align: center;
 }
+
+/* ---- Admin rács elrendezése ---- */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* ---- Admin szekciók (dobozok) ---- */
+.admin-section {
+    background: #333;
+    padding: 25px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ---- Beviteli mezők és legördülő menük ---- */
+.admin-section label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #f7d765;
+}
+
+.admin-section select,
+.admin-section input[type="text"],
+.admin-section input[type="email"],
+.admin-section input[type="tel"],
+.admin-section input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #f7d765;
+    border-radius: 5px;
+    background: #222;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ---- Gombok ---- */
+.admin-section button {
+    background-color: #CF5443;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    transition: background 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.admin-section button:hover {
+    background-color: #A83D30;
+}
+
+/* ---- Felhasználói táblázat ---- */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.user-table th, .user-table td {
+    border: 2px solid #f7d765;
+    padding: 10px;
+    text-align: center;
+}
+
+.user-table th {
+    background-color: #181515;
+    color: #FFFCFC;
+}
+
+/* ---- Foglalási mezők formázása ---- */
+.admin-section input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-left: 10px;
+}
+
+/* ---- Távolság a mezők között ---- */
+.admin-section select,
+.admin-section input {
+    margin-bottom: 10px;
+}
+
+/* ---- Versenytábla beállítása ---- */
+.admin-section .competition {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+
 
 /* Pályák listája */
 .track-item {
