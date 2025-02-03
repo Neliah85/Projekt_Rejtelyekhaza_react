@@ -12,7 +12,7 @@ import Faq from "./components/Faq";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Register from "./components/Register";
-
+import Admin from "./components/Admin";
 
 function App() {
     return (
@@ -31,6 +31,7 @@ function App() {
                 <Route path="/contact" element={<Contact/>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/admin" element={<Admin />} />
             </Routes>
         </Router>
     );
