@@ -164,21 +164,30 @@ main {
 .password-container {
     display: flex;
     align-items: center;
-    width: 90%;
     position: relative;
+    width: 100%;
 }
 
-/* Jelszó mutatás/elrejtés gomb */
+/* Beviteli mező (maradjon teljes szélességben) */
+.password-container input {
+    width: 100%;
+    padding-right: 30px; /* Helyet hagy a szem ikonnak */
+}
+
+/* Szem ikon (csak ikon, háttér nélkül) */
 .toggle-password {
-    background: none;    
+    background: none;
     border: none;
     cursor: pointer;
-    font-size: 14px; /* Kisebb méret */
     position: absolute;
-    right: 0px; /* Sor végére igazítás */
+    right: 10px; /* Jobbra igazítva */
+    font-size: 16px; /* Kisebb méret */
     color: white;
-    padding: px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 /* Gombok hover és kattintási animációja */
 .menu-button:hover {
     background-color: #A83D30;
