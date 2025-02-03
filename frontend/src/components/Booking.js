@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -77,6 +77,9 @@ const Booking = () => {
 
                         <button type="submit">Foglalás</button>
                     </form>
+                        <br></br>
+                    {/* Új gomb a regisztrációhoz */}
+                    <Link to="/register" className="booking-register-button">Foglalás regisztrációval</Link>
                 </section>
             </main>
             <Footer />
