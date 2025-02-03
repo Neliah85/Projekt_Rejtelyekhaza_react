@@ -171,6 +171,7 @@ main {
 .password-wrapper input {
     flex: 300%;  /* Kitölti a rendelkezésre álló helyet */
     padding-right: 40px; /* Kicsit beljebb hozzuk a szöveget, hogy ne érjen a gombhoz */
+    margin-left: 12px; /* A kívánt távolság pixelben */
 }
 
 /* Szem ikon teljesen kívül, jobb oldalon */
