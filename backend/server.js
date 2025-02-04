@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./db"); // MySQL kapcsolat
-const bookingRoutes = require("./routes/bookings");
-const availableTimesRoutes = require("./routes/availabletimes");
+const bookingRoutes = require("./routes/booking");
+const availableTimesRoutes = require("./routes/availableTimes");
 
 const app = express();
 
