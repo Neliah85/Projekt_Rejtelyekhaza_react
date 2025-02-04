@@ -6,7 +6,7 @@ const router = express.Router();
 const ALLOWED_DAYS = [2, 3, 4, 6]; // Kedd, szerda, csütörtök, szombat
 
 // Foglalható idősávok
-const DEFAULT_TIMES = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
+const DEFAULT_TIMES = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
 
 router.get("/available-times", async (req, res) => {
     const { trackId, date } = req.query;

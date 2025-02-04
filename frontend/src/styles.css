@@ -1234,3 +1234,45 @@ p {
     justify-content: space-between;
     align-items: center;
 }
+.time-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.time-slot {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-align: center;
+    min-width: 200px; /* Egyforma méret */
+    margin-left: 100px;
+}
+
+
+/* Szabad időpont */
+.time-slot.available {
+    background-color: #4CAF50; /* Zöld */
+    color: white;
+}
+
+/* Foglalt időpont */
+.time-slot.booked {
+    background-color: #d9534f; /* Piros */
+    color: white;
+    cursor: not-allowed;
+}
+
+/* Kiválasztott időpont (kék) */
+.time-slot.selected {
+    background-color: #007BFF; /* Kék */
+    color: white;
+}
+
+/* Hover effekt csak a szabad időpontokra */
+.time-slot.available:hover {
+    background-color: #45a049;
+}
