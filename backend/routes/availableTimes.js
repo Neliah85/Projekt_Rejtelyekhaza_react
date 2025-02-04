@@ -15,20 +15,26 @@ router.get("/available-times", async (req, res) => {
         return res.status(400).json({ error: "Hiányzó pálya ID vagy dátum!" });
     }
 
-    // Ha a kiválasztott nap nem engedélyezett, nincs foglalás
+    // Ellenőrizzük, hogy a kiválasztott nap engedélyezett-e
     const selectedDay = new Date(date).getDay();
     if (!ALLOWED_DAYS.includes(selectedDay)) {
-        return res.json({ bookedTimes: DEFAULT_TIMES });
+        return res.json({ bookedTimes: DEFAULT_TIMES }); // Ha nem engedélyezett nap, mindent foglaltnak jelez
     }
 
     try {
+        // 🔹 **Új és javított SQL lekérdezés**
         const query = `
-            SELECT TIME_FORMAT(TIME(foglalas_idopont), '%H:%i') AS bookedTime
+            SELECT DISTINCT TIME_FORMAT(TIME(foglalas_idopont), '%H:%i') AS bookedTime
             FROM foglalasok
             WHERE palya_id = ? AND DATE(foglalas_idopont) = ?
         `;
+
         const [results] = await db.query(query, [trackId, date]);
 
+        // 🔹 **Ellenőrizzük a visszatérő értékeket**
+        console.log("Foglalások:", results);
+
+        // 🔹 **Csak a valóban foglalt idősávokat küldjük vissza**
         const bookedTimes = results.map(row => row.bookedTime);
         res.json({ bookedTimes });
     } catch (error) {

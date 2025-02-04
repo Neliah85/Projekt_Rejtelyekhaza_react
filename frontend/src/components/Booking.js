@@ -29,7 +29,7 @@ const Booking = () => {
     // Ha a dátum változik, akkor frissítjük az elérhető idősávokat
     useEffect(() => {
         if (selectedDate) {
-            axios.get(`http://localhost:5000/api/available-times`, {
+            axios.get(`http://localhost:5001/api/available-times`, {
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
@@ -51,7 +51,7 @@ const Booking = () => {
         const bookingData = { trackId: id, date: selectedDate, time: selectedTime, name, email, phone };
 
         try {
-            await axios.post("http://localhost:5000/api/bookings", bookingData);
+            await axios.post("http://localhost:5001/api/bookings", bookingData);
             alert("Foglalás sikeres!");
         } catch (error) {
             console.error("Hiba a foglalás során:", error);
