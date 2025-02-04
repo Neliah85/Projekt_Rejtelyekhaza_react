@@ -14,7 +14,7 @@ app.use("/api", bookingRoutes);
 app.use("/api", availableTimesRoutes);
 
 // Szerver indítása
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Szerver fut a ${PORT} porton...`);
 });
