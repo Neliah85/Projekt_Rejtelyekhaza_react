@@ -20,7 +20,7 @@ const Booking = () => {
     const { id } = useParams(); // Az URL-ből kiolvassuk a pálya ID-ját
     const trackName = tracks[id]; // Pálya neve
     const [selectedDate, setSelectedDate] = useState("");
-    const [availableTimes, setAvailableTimes] = useState([]); // Elérhető időpontok
+    const [availableTimes, setAvailableTimes] = useState([]); // Elérhető időpontok mindig tömbként kezdődik!
     const [selectedTime, setSelectedTime] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -33,10 +33,14 @@ const Booking = () => {
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
-                setAvailableTimes(response.data.availableTimes);
+                console.log("API válasz:", response.data); // Ellenőrizzük az API választ
+                setAvailableTimes(Array.isArray(response.data.bookedTimes) ? response.data.bookedTimes : []);
                 setSelectedTime(""); // Reseteljük az idősávot
             })
-            .catch(error => console.error("Hiba az idősávok betöltésekor:", error));
+            .catch(error => {
+                console.error("Hiba az idősávok betöltésekor:", error);
+                setAvailableTimes([]); // Ha hiba van, üres tömböt állítunk be
+            });
         }
     }, [selectedDate, id]);
 
