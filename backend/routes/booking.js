@@ -2,11 +2,13 @@ const express = require("express");
 const db = require("../db");
 const router = express.Router();
 
-// Új foglalás mentése
+/**
+ * 1️⃣ **Új foglalás mentése**
+ */
 router.post("/bookings", async (req, res) => {
-    const { trackId, date, time, name, email, phone } = req.body;
+    const { trackId, date, time, name, email, phone, teamId } = req.body;
 
-    if (!trackId || !date || !time || !name || !email || !phone) {
+    if (!trackId || !date || !time || !name || !email || !phone || !teamId) {
         return res.status(400).json({ error: "Minden mező kitöltése kötelező!" });
     }
 
@@ -14,10 +16,10 @@ router.post("/bookings", async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO foglalasok (palya_id, foglalas_idopont, nev, email, telefon)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO foglalasok (palya_id, foglalas_idopont, csapat_id, nev, email, telefon)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
-        await db.query(query, [trackId, datetime, name, email, phone]);
+        await db.query(query, [trackId, datetime, teamId, name, email, phone]);
 
         res.json({ success: true, message: "Foglalás sikeresen rögzítve!" });
     } catch (error) {
@@ -26,7 +28,9 @@ router.post("/bookings", async (req, res) => {
     }
 });
 
-// Foglalás törlése (admin funkció)
+/**
+ * 2️⃣ **Foglalás törlése (admin funkció)**
+ */
 router.delete("/bookings/:id", async (req, res) => {
     const { id } = req.params;
 
