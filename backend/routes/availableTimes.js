@@ -1,33 +1,40 @@
 const express = require("express");
+const db = require("../db");
 const router = express.Router();
-const db = require("../db"); // MySQL kapcsolat
 
-// Idősávok lekérése az adott pályára és napra
+// Engedélyezett foglalási napok (0 = Vasárnap, 6 = Szombat)
+const ALLOWED_DAYS = [2, 3, 4, 6]; // Kedd, szerda, csütörtök, szombat
+
+// Foglalható idősávok
+const DEFAULT_TIMES = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
+
+// Szabad időpontok lekérése
 router.get("/available-times", async (req, res) => {
     const { trackId, date } = req.query;
-
+    
     if (!trackId || !date) {
-        return res.status(400).json({ message: "Hiányzó pálya vagy dátum!" });
+        return res.status(400).json({ error: "Hiányzó pálya ID vagy dátum!" });
+    }
+
+    // Ha a kiválasztott nap nem engedélyezett, nincs foglalás
+    const selectedDay = new Date(date).getDay();
+    if (!ALLOWED_DAYS.includes(selectedDay)) {
+        return res.json({ bookedTimes: DEFAULT_TIMES });
     }
 
     try {
-        // Előre meghatározott idősávok
-        const allTimes = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30"];
+        const query = `
+            SELECT TIME_FORMAT(TIME(foglalas_idopont), '%H:%i') AS bookedTime
+            FROM foglalasok
+            WHERE palya_id = ? AND DATE(foglalas_idopont) = ?
+        `;
+        const [results] = await db.query(query, [trackId, date]);
 
-        // Lekérdezzük a már lefoglalt időpontokat
-        const sql = "SELECT TIME(datetime) as bookedTime FROM bookings WHERE track_id = ? AND DATE(datetime) = ?";
-        const [results] = await db.query(sql, [trackId, date]);
-
-        // Foglalt idősávok kiszedése a lekérdezésből
         const bookedTimes = results.map(row => row.bookedTime);
-
-        // Szabad idősávok kiszűrése
-        const availableTimes = allTimes.filter(time => !bookedTimes.includes(time));
-
-        res.json({ availableTimes });
+        res.json({ bookedTimes });
     } catch (error) {
-        console.error("Hiba az idősávok lekérésében:", error);
-        res.status(500).json({ message: "Szerverhiba!" });
+        console.error("Hiba az idősávok lekérésekor:", error);
+        res.status(500).json({ error: "Adatbázis hiba!" });
     }
 });
 
