@@ -158,6 +158,8 @@ const Admin = () => {
                         </select>
                         <label>Csapatnév:</label>
                         <input type="text" />
+                        <label>Foglalt időpont:</label>
+                        <input type="datetime" />
                         <label>Ajtó Zár:</label>
                         <input type="time" />
                         <label>Ajtó Nyit:</label>

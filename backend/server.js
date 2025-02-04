@@ -5,29 +5,35 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // JSON adatok kezelése
 
+// MySQL adatbázis csatlakozás
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",  // Ha van jelszó, azt írd be ide
-    database: "rejtelyekhaza"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
 });
 
-db.connect(err => {
+db.connect((err) => {
     if (err) {
-        console.error("Adatbázis kapcsolódási hiba: ", err);
+        console.error("Hiba az adatbázishoz csatlakozáskor: ", err);
     } else {
-        console.log("Sikeresen csatlakozott az adatbázishoz!");
+        console.log("Sikeres csatlakozás az adatbázishoz!");
     }
 });
 
-// Teszt endpoint
+// Idősávok lekérése az adott pályára és napra
+const availableTimesRouter = require("./routes/availableTimes");
+app.use("/api", availableTimesRouter);
+
+// Teszt végpont
 app.get("/", (req, res) => {
-    res.send("API működik!");
+    res.send("Backend fut!");
 });
 
+// Indítsuk el a szervert
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-    console.log(`Szerver fut a ${PORT}-es porton`);
+    console.log(`Szerver fut a ${PORT} porton`);
 });
