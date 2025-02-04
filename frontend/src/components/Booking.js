@@ -59,11 +59,11 @@ const Booking = () => {
                         <label>Idősáv:</label>
                         <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} required>
                             <option value="">Válassz egy idősávot</option>
-                            <option value="9:00-10:00">9:00-10:00</option>
-                            <option value="10:30-11:30">10:30-11:30</option>
-                            <option value="12:00-13:00">12:00-13:00</option>
-                            <option value="13:30-14:30">13:30-14:30</option>
-                            <option value="15:00-16:00">15:00-16:00</option>
+                            <option value="9:00">9:00-10:00</option>
+                            <option value="10:30">10:30-11:30</option>
+                            <option value="12:00">12:00-13:00</option>
+                            <option value="13:30">13:30-14:30</option>
+                            <option value="15:00">15:00-16:00</option>
                         </select>
 
                         <label>Név:</label>
