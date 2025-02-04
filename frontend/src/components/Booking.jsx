@@ -105,25 +105,35 @@ const Booking = () => {
                         <input type="text" value={trackName} readOnly />
 
                         <label>Dátum:</label>
-                        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
+                            <input
+                                type="date"
+                                value={selectedDate}
+                                onChange={(e) => setSelectedDate(e.target.value)}
+                                required
+                            />
 
-                        
-                        <label>Válassz egy időpontot:</label>
-                            <div className="time-slots">
-                                {["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"].map(time => {
-                                    const isBooked = !availableTimes.includes(time);
-                                    const isSelected = selectedTime === time; // Ellenőrizzük, hogy ki van-e választva
-                                    return (
-                                        <div
-                                            key={time}
-                                            className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`}
-                                            onClick={() => !isBooked && setSelectedTime(time)} // Csak a szabad időpontot lehet kijelölni
-                                        >
-                                            {time} {isBooked ? "(Foglalt)" : ""}
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                            {/* Idősávok csak akkor jelennek meg, ha van kiválasztott dátum */}
+                            {selectedDate && (
+                                <>
+                                    <label>Válassz egy idősávot:</label>
+                                    <div className="time-slots">
+                                        {["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"].map(time => {
+                                            const isBooked = !availableTimes.includes(time);
+                                            const isSelected = selectedTime === time; // Ellenőrizzük, hogy ki van-e választva
+                                            return (
+                                                <div
+                                                    key={time}
+                                                    className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`}
+                                                    onClick={() => !isBooked && setSelectedTime(time)} // Csak a szabad időpontot lehet kijelölni
+                                                >
+                                                    {time} {isBooked ? "(Foglalt)" : ""}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </>
+                            )}
+
 
 
                         <label>Név:</label>
