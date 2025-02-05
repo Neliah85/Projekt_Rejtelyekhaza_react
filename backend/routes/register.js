@@ -1,13 +1,13 @@
 const express = require("express");
 const db = require("../db");
 const bcrypt = require("bcrypt");
-const { v4: uuidv4 } = require("uuid"); // Egyedi UUID generálás a csapat ID-hoz
+const { v4: uuidv4 } = require("uuid"); 
 
 const router = express.Router();
 
-// **Új csapat/felhasználó regisztráció**
+
 router.post("/register", async (req, res) => {
-    console.log("Beérkező adatok:", req.body); // Debug kiírás
+    console.log("Beérkező adatok:", req.body); 
 
     const { teamName, captainName, email, phone, password } = req.body;
 
@@ -17,7 +17,7 @@ router.post("/register", async (req, res) => {
     }
 
     try {
-        // **Ellenőrizzük, hogy az email cím már létezik-e**
+        
         const checkEmailQuery = `SELECT email FROM csapatok WHERE email = ? LIMIT 1`;
         const [emailResult] = await db.query(checkEmailQuery, [email]);
 
@@ -25,14 +25,14 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ error: "Ez az email cím már regisztrálva van!" });
         }
 
-        // **Csapat ID generálása**
+        
         const teamId = uuidv4();
 
-        // **Jelszó hashelése**
+        
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // **Új csapat beszúrása az adatbázisba**
+        
         const insertQuery = `
             INSERT INTO csapatok (CsapatID, Nev, CsKapitany, email, telefonszam, SALT, HASH)
             VALUES (?, ?, ?, ?, ?, ?, ?)

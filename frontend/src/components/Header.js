@@ -1,16 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/images/logo.png"; 
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 
 const Header = () => {
+    const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [teamName, setTeamName] = useState("");
 
     useEffect(() => {
         const adminToken = localStorage.getItem("adminToken");
+        const userToken = localStorage.getItem("token");
+        const storedTeamName = localStorage.getItem("teamName");
+
         if (adminToken) {
             setIsAdmin(true);
         }
+
+        if (userToken) {
+            setIsLoggedIn(true);
+            setTeamName(storedTeamName);
+        }
     }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("teamName");
+        localStorage.removeItem("teamId");
+        localStorage.removeItem("adminToken");
+
+        setIsLoggedIn(false);
+        setIsAdmin(false);
+        navigate("/"); 
+    };
 
     return (
         <header className="header">
@@ -24,7 +46,7 @@ const Header = () => {
                     <li><Link to="/tracks" className="menu-button">Pályák és foglalás</Link></li>
                     <li><Link to="/prices" className="menu-button">Árak</Link></li>
                     <li><Link to="/reviews" className="menu-button">Vélemények</Link></li>
-                    <li><Link to="/faq" className="menu-button">Gyakran Ismételt Kérdések</Link></li>
+                    <li><Link to="/faq" className="menu-button">GYIK</Link></li>
                     <li><Link to="/contact" className="menu-button">Kapcsolat</Link></li>
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
 
@@ -33,10 +55,19 @@ const Header = () => {
                 </ul>
             </nav>
 
-            {/* Belépés és Regisztráció gombok */}
+            {/* ✅ Ha be van jelentkezve, kijelentkezés gomb jelenik meg */}
             <div className="auth-buttons">
-                <Link to="/login" className="login-button">Belépés</Link>
-                <Link to="/register" className="register-button">Regisztráció</Link>
+                {isLoggedIn ? (
+                    <>
+                        <span className="welcome-text">Üdv, {teamName}!</span>
+                        <button onClick={handleLogout} className="logout-button">Kijelentkezés</button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" className="login-button">Belépés</Link>
+                        <Link to="/register" className="register-button">Regisztráció</Link>
+                    </>
+                )}
             </div>
         </header>
     );

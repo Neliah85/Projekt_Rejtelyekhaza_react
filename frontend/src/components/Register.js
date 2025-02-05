@@ -77,7 +77,7 @@ const Register = () => {
                     navigate("/login");
                 }, 2000);
 
-                // Mezők ürítése
+                
                 setUsername("");
                 setTeamName("");
                 setEmail("");

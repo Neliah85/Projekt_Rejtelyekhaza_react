@@ -84,6 +84,32 @@ main {
     background-color: #A83D30;
 }
 
+/* Kijelentkezés gomb */
+.logout-button {
+    background-color: #CF5443;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    transition: background 0.3s;
+    margin-left: 10px;
+}
+
+.logout-button:hover {
+    background-color: #A83D30;
+}
+
+/* Üdvözlő szöveg a bejelentkezett felhasználónak */
+.welcome-text {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+
 /* Bejelentkezés és Regisztráció oldalak */
 .auth-container {
     text-align: center;
