@@ -3,6 +3,7 @@ const cors = require("cors");
 const db = require("./db"); 
 const bookingRoutes = require("./routes/bookings");
 const availableTimesRoutes = require("./routes/availableTimes");
+const registerRoutes = require("./routes/register");
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 
 app.use("/api", bookingRoutes);
 app.use("/api", availableTimesRoutes);
+app.use("/api", registerRoutes);
 
 
 const PORT = 5001;

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
 const Register = () => {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState("");
     const [teamName, setTeamName] = useState("");
     const [email, setEmail] = useState("");
@@ -16,17 +20,14 @@ const Register = () => {
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
-    
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,3}$/.test(email);
-
-    
     const validatePhone = (phone) => /^(?:\+36|06)[\s-]?(?:1|20|30|31|32|50|70|90)[\s-]?\d{3}[\s-]?\d{4}$/.test(phone);
-
-    
     const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!=\-;.,]).{6,}$/.test(password);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let isValid = true;
 
@@ -59,14 +60,35 @@ const Register = () => {
         }
 
         if (isValid) {
-            setFormSubmitted(true);
-            setTimeout(() => setFormSubmitted(false), 3000);
-            setUsername("");
-            setTeamName("");
-            setEmail("");
-            setPhone("");
-            setPassword("");
-            setConfirmPassword("");
+            try {
+                const response = await axios.post("http://localhost:5001/api/register", {
+                    teamName,
+                    captainName: username,
+                    email,
+                    phone,
+                    password
+                });
+
+                setSuccessMessage(response.data.message);
+                setError("");
+                setFormSubmitted(true);
+                setTimeout(() => {
+                    setFormSubmitted(false);
+                    navigate("/login");
+                }, 2000);
+
+                // Mezők ürítése
+                setUsername("");
+                setTeamName("");
+                setEmail("");
+                setPhone("");
+                setPassword("");
+                setConfirmPassword("");
+
+            } catch (error) {
+                console.error("Hiba a regisztráció során:", error);
+                setError(error.response?.data?.error || "Hiba történt a regisztráció során.");
+            }
         }
     };
 
@@ -75,6 +97,9 @@ const Register = () => {
             <Header />
             <main className="auth-container">
                 <h2>Regisztráció</h2>
+                {error && <p className="error">{error}</p>}
+                {successMessage && <p className="success">{successMessage}</p>}
+
                 <form onSubmit={handleSubmit}>
                     <label>Felhasználónév:</label>
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
@@ -92,12 +117,7 @@ const Register = () => {
 
                     <label>Jelszó:</label>
                     <div className="password-wrapper">
-                        <input 
-                            type={showPassword ? "text" : "password"} 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
-                        />
+                        <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? "🙈" : "👁️"}
                         </button>
@@ -106,12 +126,7 @@ const Register = () => {
 
                     <label>Jelszó megerősítése:</label>
                     <div className="password-wrapper">
-                        <input 
-                            type={showConfirmPassword ? "text" : "password"} 
-                            value={confirmPassword} 
-                            onChange={(e) => setConfirmPassword(e.target.value)} 
-                            required 
-                        />
+                        <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                         <button type="button" className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                             {showConfirmPassword ? "🙈" : "👁️"}
                         </button>
