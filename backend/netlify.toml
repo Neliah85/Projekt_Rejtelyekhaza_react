@@ -3,7 +3,7 @@
 
 [dev]
   functions = "functions"
-  command = "npm start"  # Vagy ha nincs start script: "node functions/api.js"
+  command = "node functions/api.js"
   targetPort = 8888
 
 [[redirects]]
