@@ -17,44 +17,44 @@ const tracks = {
 };
 
 const Booking = () => {
-    const { id } = useParams(); // Az URL-ből kiolvassuk a pálya ID-ját
-    const trackName = tracks[id]; // Pálya neve
+    const { id } = useParams(); 
+    const trackName = tracks[id]; 
     const [selectedDate, setSelectedDate] = useState("");
-    const [availableTimes, setAvailableTimes] = useState([]); // Elérhető időpontok mindig tömbként kezdődik!
+    const [availableTimes, setAvailableTimes] = useState([]); 
     const [selectedTime, setSelectedTime] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
-    // Ha a dátum változik, akkor frissítjük az elérhető idősávokat
+    
     useEffect(() => {
         if (selectedDate) {
-            axios.get(`http://localhost:5001/api/available-times`, {
+            axios.get(`http:
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
-                console.log("API válasz:", response.data); // Ellenőrizzük az API választ
+                console.log("API válasz:", response.data); 
     
-                // **Összes lehetséges idősáv**
+                
                 const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
                 
-                // **Foglalások az API válaszából (átalakítás egyforma formátumra)**
+                
                 const bookedTimes = Array.isArray(response.data.bookedTimes)
-                    ? response.data.bookedTimes.map(time => time.replace(/^0/, "")) // "09:00" -> "9:00"
+                    ? response.data.bookedTimes.map(time => time.replace(/^0/, "")) 
                     : [];
     
-                // **Szabad időpontok kiszámítása**
+                
                 const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
     
                 console.log("Foglalások (piros kell legyen):", bookedTimes);
                 console.log("Szabad időpontok (zöld kell legyen):", freeTimes);
     
-                setAvailableTimes(freeTimes); // **Csak a szabad időpontokat állítjuk be**
-                setSelectedTime(""); // Reseteljük az idősávot
+                setAvailableTimes(freeTimes); 
+                setSelectedTime(""); 
             })
             .catch(error => {
                 console.error("Hiba az idősávok betöltésekor:", error);
-                setAvailableTimes([]); // Ha hiba van, üres tömböt állítunk be
+                setAvailableTimes([]); 
             });
         }
     }, [selectedDate, id]);
@@ -70,7 +70,7 @@ const Booking = () => {
         }
     
         const bookingData = {
-            trackId: id, // `palya_id`-ként fog bekerülni az adatbázisba
+            trackId: id, 
             date: selectedDate,
             time: selectedTime,
             name,
@@ -81,7 +81,7 @@ const Booking = () => {
         console.log("Foglalás beküldése:", bookingData);
     
         try {
-            const response = await axios.post("http://localhost:5001/api/bookings", bookingData, {
+            const response = await axios.post("http:
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -133,12 +133,12 @@ const Booking = () => {
                                     <div className="time-slots">
                                         {["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"].map(time => {
                                             const isBooked = !availableTimes.includes(time);
-                                            const isSelected = selectedTime === time; // Ellenőrizzük, hogy ki van-e választva
+                                            const isSelected = selectedTime === time; 
                                             return (
                                                 <div
                                                     key={time}
                                                     className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`}
-                                                    onClick={() => !isBooked && setSelectedTime(time)} // Csak a szabad időpontot lehet kijelölni
+                                                    onClick={() => !isBooked && setSelectedTime(time)} 
                                                 >
                                                     {time} {isBooked ? "(Foglalt)" : ""}
                                                 </div>

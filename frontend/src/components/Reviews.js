@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-// Pályák listája
+
 const tracks = [
     "Menekülés az iskolából",
     "A pedellus bosszúja",
@@ -15,13 +15,13 @@ const tracks = [
     "Titkok Labirintusa"
 ];
 
-// Véletlenszerű szobát rendel, ha egy véleményben nincs `track`
+
 const assignRandomTrack = (review) => ({
     ...review,
     track: review.track || tracks[Math.floor(Math.random() * tracks.length)]
 });
 
-// Alapértelmezett vélemények
+
 const defaultReviews = [
     { name: "Zoli92", rating: 5, text: "Fantasztikus élmény volt! Nagyon izgalmas feladatok és szuper díszletek!", escaped: true, track: "Menekülés az iskolából" },
     { name: "AnitaK", rating: 4, text: "Nagyon élveztem, bár az utolsó feladat kifogott rajtunk!", escaped: false, track: "A pedellus bosszúja" },
@@ -32,7 +32,7 @@ const defaultReviews = [
     { name: "David_T", rating: 4, text: "Nagyon jól szórakoztunk, de az egyik rejtvény kicsit nehéz volt számunkra.", escaped: false, track: "KódX Szoba" },
 ];
 
-// Csillagok generálása
+
 const getStars = (rating) => "⭐".repeat(rating) + "☆".repeat(5 - rating);
 
 const Reviews = () => {
@@ -44,7 +44,7 @@ const Reviews = () => {
     const [selectedTrack, setSelectedTrack] = useState(tracks[0]);
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    // Betöltéskor ellenőrizzük a localStorage-t, és frissítjük a hiányzó `track` mezőket
+    
     useEffect(() => {
         let storedReviews = JSON.parse(localStorage.getItem("reviews")) || [];
         

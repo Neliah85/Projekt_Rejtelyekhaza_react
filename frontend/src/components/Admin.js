@@ -29,7 +29,7 @@ const Admin = () => {
 
     const fetchTracks = async () => {
         try {
-            const response = await axios.get("http://localhost:5001/tracks");
+            const response = await axios.get("http:
             setTracks(response.data);
         } catch (error) {
             setError("Nem sikerült betölteni a pályákat.");
@@ -38,7 +38,7 @@ const Admin = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get("http://localhost:5001/users");
+            const response = await axios.get("http:
             setUsers(response.data);
         } catch (error) {
             setError("Nem sikerült betölteni a felhasználókat.");
@@ -51,7 +51,7 @@ const Admin = () => {
             return;
         }
         try {
-            const response = await axios.get(`http://localhost:5001/bookings?track=${selectedTrack}&date=${selectedDate}`);
+            const response = await axios.get(`http:
             setBookings(response.data);
         } catch (error) {
             setError("Nem sikerült lekérdezni a foglalásokat.");
@@ -60,7 +60,7 @@ const Admin = () => {
 
     const deleteBooking = async (bookingId) => {
         try {
-            await axios.delete(`http://localhost:5001/bookings/${bookingId}`);
+            await axios.delete(`http:
             setBookings(bookings.filter((booking) => booking.id !== bookingId));
         } catch (error) {
             setError("Nem sikerült törölni a foglalást.");
