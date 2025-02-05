@@ -3,7 +3,8 @@
 
 [dev]
   functions = "functions"
-  command = "node functions/api.js"
+  autoLaunch = false
+  command = "npm run serve"
   targetPort = 8888
 
 [[redirects]]
