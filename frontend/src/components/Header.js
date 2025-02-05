@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/images/logo.png"; 
+import logo from "../assets/images/logo.png"; // Logó importálása
 
 const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false);

@@ -1,6 +1,6 @@
 const mysql = require("mysql2/promise");
 
-
+// Adatbázis kapcsolat beállítása
 const db = mysql.createPool({
     host: "localhost",
     user: "root",

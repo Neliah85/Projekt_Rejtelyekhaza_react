@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-
+// Képek importálása
 import palya1 from "../assets/images/palya1.jpg";
 import palya2 from "../assets/images/palya2.jpg";
 import palya3 from "../assets/images/palya3.jpg";

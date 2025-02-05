@@ -17,13 +17,13 @@ const Register = () => {
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    
+    // Email validáció
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,3}$/.test(email);
 
-    
+    // Magyar telefonszám validáció
     const validatePhone = (phone) => /^(?:\+36|06)[\s-]?(?:1|20|30|31|32|50|70|90)[\s-]?\d{3}[\s-]?\d{4}$/.test(phone);
 
-    
+    // Jelszó validáció
     const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!=\-;.,]).{6,}$/.test(password);
 
     const handleSubmit = (e) => {

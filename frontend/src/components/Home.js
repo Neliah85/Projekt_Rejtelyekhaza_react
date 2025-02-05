@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-
+// Képek importálása az `src/assets/images/` mappából
 import palya1 from "../assets/images/palya1.jpg";
 import palya2 from "../assets/images/palya2.jpg";
 import palya3 from "../assets/images/palya3.jpg";
@@ -13,7 +13,7 @@ import palya7 from "../assets/images/palya7.jpg";
 import palya8 from "../assets/images/palya8.jpg";
 import palya9 from "../assets/images/palya9.jpg";
 
-
+// Slideshow képek (akciók, új pályák stb.)
 const slides = [
     { id: 1, text: "🎉 Új pálya: A pedellus bosszúja", image: "/images/slide1.jpg" },
     { id: 2, text: "🔥 Februári akció: 10% kedvezmény hétköznapokon!", image: "/images/slide2.jpg" },
@@ -26,7 +26,7 @@ const Home = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000); 
+        }, 5000); // 5 másodpercenként vált
         return () => clearInterval(interval);
     }, []);
 

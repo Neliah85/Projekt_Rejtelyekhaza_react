@@ -5,13 +5,13 @@ import Footer from "./Footer";
 const Gallery = () => {
     const [images, setImages] = useState([]);
 
-    
+    // Betöltéskor ellenőrizzük a localStorage-t
     useEffect(() => {
         const storedImages = JSON.parse(localStorage.getItem("galleryImages")) || [];
         setImages(storedImages);
     }, []);
 
-    
+    // Kép feltöltése
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -19,7 +19,7 @@ const Gallery = () => {
             reader.onloadend = () => {
                 const newImages = [...images, reader.result];
                 setImages(newImages);
-                localStorage.setItem("galleryImages", JSON.stringify(newImages)); 
+                localStorage.setItem("galleryImages", JSON.stringify(newImages)); // Tárolás
             };
             reader.readAsDataURL(file);
         }

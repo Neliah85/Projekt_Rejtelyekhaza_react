@@ -1,7 +1,7 @@
 {
   "name": "projekt_rejtelyekhaza",
   "version": "1.0.0",
-  "homepage": "https:
+  "homepage": "https://rejtelyekhaza.netlify.app",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",

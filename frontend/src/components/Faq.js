@@ -22,8 +22,8 @@ const FAQ = () => {
         e.preventDefault();
         if (question.trim() === "") return;
         setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 3000); 
-        setQuestion(""); 
+        setTimeout(() => setShowPopup(false), 3000); // 3 másodperc után eltűnik a popup
+        setQuestion(""); // Űrlap törlése
     };
 
     return (

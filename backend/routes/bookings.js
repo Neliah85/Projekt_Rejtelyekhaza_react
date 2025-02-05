@@ -3,7 +3,7 @@ const db = require("../db");
 const router = express.Router();
 
 router.post("/bookings", async (req, res) => {
-    console.log("Beérkező adatok:", req.body); 
+    console.log("Beérkező adatok:", req.body); // Debug kiírás
 
     const { trackId, date, time, name, email, phone } = req.body;
 
@@ -15,18 +15,18 @@ router.post("/bookings", async (req, res) => {
     try {
         const bookingDatetime = `${date} ${time}:00`;
 
-        
+        // **Csapat ID lekérdezése email alapján**
         const teamQuery = `SELECT CsapatID FROM csapatok WHERE email = ? LIMIT 1`;
         const [teamResult] = await db.query(teamQuery, [email]);
 
         let teamId;
         if (teamResult.length > 0) {
-            teamId = teamResult[0].CsapatID; 
+            teamId = teamResult[0].CsapatID; // Ha van csapat, ezt használjuk
         } else {
-            
+            // **Ha nincs csapat, akkor az előre létrehozott `teamvendegX` csapat ID-t kell használni**
             const guestTeamId = `teamvendeg${trackId.replace("palya", "")}`;
 
-            
+            // **Ellenőrizzük, hogy ez a csapat ID létezik-e a csapatok táblában**
             const checkGuestTeamQuery = `SELECT CsapatID FROM csapatok WHERE CsapatID = ? LIMIT 1`;
             const [guestTeamResult] = await db.query(checkGuestTeamQuery, [guestTeamId]);
 
@@ -38,7 +38,7 @@ router.post("/bookings", async (req, res) => {
             }
         }
 
-        
+        // **Foglalás mentése adatbázisba**
         const query = `
             INSERT INTO foglalasok (palya_id, foglalas_idopont, csapat_id, nev, email, telefon)
             VALUES (?, ?, ?, ?, ?, ?)
