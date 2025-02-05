@@ -58,28 +58,42 @@ const Booking = () => {
             });
         }
     }, [selectedDate, id]);
-    
-    
+      
     
 
     const handleBooking = async (e) => {
         e.preventDefault();
-
+    
         if (!selectedTime) {
             alert("Válassz egy szabad idősávot!");
             return;
         }
-
-        const bookingData = { trackId: id, date: selectedDate, time: selectedTime, name, email, phone };
-
+    
+        const bookingData = {
+            trackId: id, // `palya_id`-ként fog bekerülni az adatbázisba
+            date: selectedDate,
+            time: selectedTime,
+            name,
+            email,
+            phone
+        };
+    
+        console.log("Foglalás beküldése:", bookingData);
+    
         try {
-            await axios.post("http://localhost:5001/api/bookings", bookingData);
-            alert("Foglalás sikeres!");
+            const response = await axios.post("http://localhost:5001/api/bookings", bookingData, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            alert(response.data.message);
         } catch (error) {
             console.error("Hiba a foglalás során:", error);
             alert("Hiba történt a foglalás során.");
         }
     };
+ 
+    
 
     if (!trackName) {
         return (
