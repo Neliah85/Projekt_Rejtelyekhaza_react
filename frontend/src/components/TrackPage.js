@@ -13,7 +13,7 @@ import palya7 from "../assets/images/palya7.jpg";
 import palya8 from "../assets/images/palya8.jpg";
 import palya9 from "../assets/images/palya9.jpg";
 
-// Szobák (pályák) adatai
+
 const tracks = {
     palya1: { 
         name: "Menekülés az iskolából", 

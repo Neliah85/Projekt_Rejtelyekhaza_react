@@ -11,13 +11,13 @@ const Contact = () => {
     const [phoneError, setPhoneError] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    // Email validáció
+    
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,3}$/;
         return emailRegex.test(email);
     };
 
-    // Magyar telefonszám validáció
+    
     const validatePhone = (phone) => {
         const phoneRegex = /^(?:\+36|06)[\s-]?(?:1|20|30|31|32|50|70|90)[\s-]?\d{3}[\s-]?\d{4}$/;
         return phoneRegex.test(phone);
