@@ -1,7 +1,12 @@
 [build]
   functions = "functions"
 
+[dev]
+  functions = "functions"
+  command = "npm start"  # Vagy ha nincs start script: "node functions/api.js"
+  targetPort = 8888
+
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/.netlify/functions/api"
   status = 200
