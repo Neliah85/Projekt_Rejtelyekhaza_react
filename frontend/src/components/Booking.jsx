@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -17,74 +17,70 @@ const tracks = {
 };
 
 const Booking = () => {
-    const { id } = useParams(); 
-    const trackName = tracks[id]; 
+    const { id } = useParams();
+    const trackName = tracks[id];
     const [selectedDate, setSelectedDate] = useState("");
-    const [availableTimes, setAvailableTimes] = useState([]); 
+    const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [teamName, setTeamName] = useState("");
+    const navigate = useNavigate();
 
-    
     useEffect(() => {
+        
+        if (!isLoggedIn()) {
+            navigate("/login");
+            return;
+        }
+
+        
+        const userData = getUserData();
+        if (userData) {
+            setName(userData.name || "");
+            setEmail(userData.email || "");
+            setPhone(userData.phone || "");
+        }
+
         if (selectedDate) {
             axios.get(`http://localhost:5001/api/available-times`, {
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
-                console.log("API válasz:", response.data); 
-    
-                
                 const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
-                
-                
                 const bookedTimes = Array.isArray(response.data.bookedTimes)
-                    ? response.data.bookedTimes.map(time => time.replace(/^0/, "")) 
+                    ? response.data.bookedTimes.map(time => time.replace(/^0/, ""))
                     : [];
-    
-                
                 const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
-    
-                console.log("Foglalások (piros kell legyen):", bookedTimes);
-                console.log("Szabad időpontok (zöld kell legyen):", freeTimes);
-    
-                setAvailableTimes(freeTimes); 
-                setSelectedTime(""); 
+                setAvailableTimes(freeTimes);
+                setSelectedTime("");
             })
             .catch(error => {
                 console.error("Hiba az idősávok betöltésekor:", error);
-                setAvailableTimes([]); 
+                setAvailableTimes([]);
             });
         }
-    }, [selectedDate, id]);
-      
-    
+    }, [selectedDate, id, navigate]);
 
     const handleBooking = async (e) => {
         e.preventDefault();
-    
         if (!selectedTime) {
             alert("Válassz egy szabad idősávot!");
             return;
         }
-    
         const bookingData = {
-            trackId: id, 
+            trackId: id,
             date: selectedDate,
             time: selectedTime,
             name,
             email,
-            phone
+            phone,
+            teamName,
         };
-    
-        console.log("Foglalás beküldése:", bookingData);
-    
         try {
             const response = await axios.post("http://localhost:5001/api/bookings", bookingData, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                headers: { "Content-Type": "application/json" }
             });
             alert(response.data.message);
         } catch (error) {
@@ -92,8 +88,6 @@ const Booking = () => {
             alert("Hiba történt a foglalás során.");
         }
     };
- 
-    
 
     if (!trackName) {
         return (
@@ -119,36 +113,24 @@ const Booking = () => {
                         <input type="text" value={trackName} readOnly />
 
                         <label>Dátum:</label>
-                            <input
-                                type="date"
-                                value={selectedDate}
-                                onChange={(e) => setSelectedDate(e.target.value)}
-                                required
-                            />
+                        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
 
-                            {/* Idősávok csak akkor jelennek meg, ha van kiválasztott dátum */}
-                            {selectedDate && (
-                                <>
-                                    <label>Válassz egy idősávot:</label>
-                                    <div className="time-slots">
-                                        {["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"].map(time => {
-                                            const isBooked = !availableTimes.includes(time);
-                                            const isSelected = selectedTime === time; 
-                                            return (
-                                                <div
-                                                    key={time}
-                                                    className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`}
-                                                    onClick={() => !isBooked && setSelectedTime(time)} 
-                                                >
-                                                    {time} {isBooked ? "(Foglalt)" : ""}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </>
-                            )}
-
-
+                        {selectedDate && (
+                            <>
+                                <label>Válassz egy idősávot:</label>
+                                <div className="time-slots">
+                                    {["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"].map(time => {
+                                        const isBooked = !availableTimes.includes(time);
+                                        const isSelected = selectedTime === time;
+                                        return (
+                                            <div key={time} className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`} onClick={() => !isBooked && setSelectedTime(time)}>
+                                                {time} {isBooked ? "(Foglalt)" : ""}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </>
+                        )}
 
                         <label>Név:</label>
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
@@ -159,12 +141,11 @@ const Booking = () => {
                         <label>Telefonszám:</label>
                         <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
 
+                        <label>Csapatnév:</label>
+                        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required />
+
                         <button type="submit" disabled={!selectedTime}>Foglalás</button>
                     </form>
-
-                    <br />
-                    {/* Foglalás regisztrációval gomb */}
-                    <Link to="/register" className="booking-register-button">Foglalás regisztrációval</Link>
                 </section>
             </main>
             <Footer />
@@ -173,3 +154,18 @@ const Booking = () => {
 };
 
 export default Booking;
+
+
+function isLoggedIn() {
+    
+    return true; 
+}
+
+function getUserData() {
+    
+    return {
+        name: "Példa Név",
+        email: "pelda@email.com",
+        phone: "+36301234567"
+    };
+}
