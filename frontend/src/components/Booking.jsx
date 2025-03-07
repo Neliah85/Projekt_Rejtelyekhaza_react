@@ -27,10 +27,13 @@ const Booking = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isLoggedIn()) {
+        const userToken = localStorage.getItem("token");
+        
+        if (!userToken) {
             navigate("/login");
             return;
         }
+    
 
         const fetchUserData = async () => {
             try {

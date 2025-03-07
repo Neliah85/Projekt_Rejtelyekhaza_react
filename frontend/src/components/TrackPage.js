@@ -43,53 +43,54 @@ const tracks = {
         name: "Időcsapda",
         description: "Az Időcsapda szobában egy időutazás vár rád, ahol a múlt és a jövő határvonalán kell navigálnod. A szobában minden egyes elem – a régi órák, a futurisztikus eszközök és a rejtett mechanizmusok – egy új időszakot képvisel. A célod, hogy megtaláld az időcsapda rejtett kulcsát, miközben különböző időszakok rejtélyeivel kell szembenézned. Minden lépés egy új kihívást jelent, ahogy próbálod helyreállítani az idő vonalát és megtalálni a kiutat. Vajon sikerül kijutnod a múlt és a jövő labirintusából?",
         image: palya6
+    },
+    palya7: {
+        name: "KódX Szoba",
+        description: "A KódX Szoba egy technológiai labirintus, ahol minden digitális eszköz és kód egy újabb rejtélyt rejt. A szoba tele van fejlett technológiai eszközökkel, rejtett kódokkal és mechanikus rendszerekkel, amelyek megoldásához szükség van az intelligenciádra és kreativitásodra. A feladatod, hogy navigálj a digitális világban, és megfejtsd a rejtett kódokat, amelyek a szoba különböző pontjain elhelyezkednek. Minden egyes kód egy újabb lépést jelent a szabadulás felé, miközben technológiai csapdákkal és kihívásokkal találkozol. Meg tudod oldani a KódX Szoba titkait és kijutni az elektronikus labirintusból?",
+        image: palya7
+    },
+    palya8: {
+        name: "Kalandok Kamrája",
+        description: "A Kalandok Kamrája egy mesés helyszín, ahol a fantázia és a kaland keveredik. Az ódon kamrában egy sor izgalmas feladvány és rejtett kincs vár felfedezésre. A szoba minden sarkában új kihívásokkal és varázslatos elemekkel találkozol, amelyek próbára teszik ügyességedet és bátorságodat. Az ősi könyvek, rejtett nyomok és varázslatos eszközök segítségével kell megtalálnod az utat a kijárat felé. A kaland során számos érdekes karakterrel és történettel találkozhatsz, amelyek további nyomokat adhatnak a célod eléréséhez. Készen állsz a legnagyobb kalandra és a kincs megtalálására?",
+        image: palya8
+    },
+    palya9: {
+        name: "Titkok Labirintusa",
+        description: "A Titkok Labirintusa egy komplex és zavarba ejtő labirintus, ahol minden fordulat új titkokat és kihívásokat rejt. Az útvesztő falai között rejtett üzenetek, rejtélyes szimbólumok és bonyolult feladványok várnak rád. Ahogy egyre mélyebbre hatolsz a labirintusban, úgy egyre bonyolultabbá válnak a feladatok, és a labirintus rejtett titkai is fokozatosan feltárulnak. A célod, hogy megtaláld a kijáratot, miközben megoldod a titokzatos rejtvényeket és navigálsz a labirintus szűk folyosóin. Vajon sikerül kijutnod a Titkok Labirintusából és megfejteni a legnagyobb rejtélyeket?",
+        image: palya9
     }
 };
 
 const TrackPage = () => {
     const { id } = useParams();
     const track = tracks[id];
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const userToken = localStorage.getItem('userToken');
 
     const handleBookingClick = () => {
-        if (!isLoggedIn()) {
+        if (!userToken) {
             navigate("/login");
-            return;
+            return; 
         }
         navigate(`/booking/${id}`);
     };
 
     if (!track) {
-        return (
-            <>
-                <Header />
-                <main className="track-container">
-                    <h2>Hiba</h2>
-                    <p>Ez a pálya nem létezik!</p>
-                </main>
-                <Footer />
-            </>
-        );
+        return <div> A pálya nem található! </div>; 
     }
 
     return (
-        <>
+        <div>
             <Header />
-            <main className="track-container">
-                <h2>{track.name}</h2>
-                <img src={track.image} alt={track.name} className="track-image" />
+            <div>
+                <h1>{track.name}</h1>
+                <img src={track.image} alt={track.name} />
                 <p>{track.description}</p>
-                <button onClick={handleBookingClick} className="button">Foglalás</button>
-            </main>
+                <button onClick={handleBookingClick}>Foglalás</button>
+            </div>
             <Footer />
-        </>
+        </div>
     );
 };
 
 export default TrackPage;
-
-
-function isLoggedIn() {
-   
-    return true;
-}
