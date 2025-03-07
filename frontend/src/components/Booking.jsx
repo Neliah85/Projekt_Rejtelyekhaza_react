@@ -22,29 +22,30 @@ const Booking = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [userData, setUserData] = useState({ name: "", email: "", phone: "" });
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        
         if (!isLoggedIn()) {
             navigate("/login");
             return;
         }
 
-        
-        const userData = getUserData();
-        if (userData) {
-            setName(userData.name || "");
-            setEmail(userData.email || "");
-            setPhone(userData.phone || "");
-        }
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get("http://localhost:5001/api/user-data");
+                setUserData(response.data);
+            } catch (error) {
+                console.error("Hiba a felhasználói adatok lekérésekor:", error);
+            }
+        };
+        fetchUserData();
+    }, [navigate]);
 
+    useEffect(() => {
         if (selectedDate) {
-            axios.get(`http://localhost:5001/api/available-times`, {
+            axios.get("http://localhost:5001/api/available-times", {
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
@@ -61,7 +62,7 @@ const Booking = () => {
                 setAvailableTimes([]);
             });
         }
-    }, [selectedDate, id, navigate]);
+    }, [selectedDate, id]);
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -73,9 +74,9 @@ const Booking = () => {
             trackId: id,
             date: selectedDate,
             time: selectedTime,
-            name,
-            email,
-            phone,
+            name: userData.name,
+            email: userData.email,
+            phone: userData.phone,
             teamName,
         };
         try {
@@ -115,36 +116,27 @@ const Booking = () => {
                         <label>Dátum:</label>
                         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
 
-                        {selectedDate && (
-                            <>
-                                <label>Válassz egy idősávot:</label>
-                                <div className="time-slots">
-                                    {["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"].map(time => {
-                                        const isBooked = !availableTimes.includes(time);
-                                        const isSelected = selectedTime === time;
-                                        return (
-                                            <div key={time} className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`} onClick={() => !isBooked && setSelectedTime(time)}>
-                                                {time} {isBooked ? "(Foglalt)" : ""}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </>
-                        )}
-
-                        <label>Név:</label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-
-                        <label>Email:</label>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-
-                        <label>Telefonszám:</label>
-                        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                        <label>Idősáv:</label>
+                        <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} required>
+                            <option value="">Válassz időpontot</option>
+                            {availableTimes.map((time) => (
+                                <option key={time} value={time}>{time}</option>
+                            ))}
+                        </select>
 
                         <label>Csapatnév:</label>
                         <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required />
 
-                        <button type="submit" disabled={!selectedTime}>Foglalás</button>
+                        <label>Név:</label>
+                        <input type="text" value={userData.name} readOnly />
+
+                        <label>Email:</label>
+                        <input type="email" value={userData.email} readOnly />
+
+                        <label>Telefon:</label>
+                        <input type="text" value={userData.phone} readOnly />
+
+                        <button type="submit">Foglalás</button>
                     </form>
                 </section>
             </main>
@@ -154,18 +146,3 @@ const Booking = () => {
 };
 
 export default Booking;
-
-
-function isLoggedIn() {
-    
-    return true; 
-}
-
-function getUserData() {
-    
-    return {
-        name: "Példa Név",
-        email: "pelda@email.com",
-        phone: "+36301234567"
-    };
-}

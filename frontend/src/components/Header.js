@@ -7,12 +7,14 @@ const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [teamName, setTeamName] = useState("");
+    const [username, setUsername] = useState("");
 
     useEffect(() => {
         const adminToken = localStorage.getItem("adminToken");
         const userToken = localStorage.getItem("token");
         const storedTeamName = localStorage.getItem("teamName");
-
+        const storedUsername = localStorage.getItem("username");
+       
         if (adminToken) {
             setIsAdmin(true);
         }
@@ -20,6 +22,7 @@ const Header = () => {
         if (userToken) {
             setIsLoggedIn(true);
             setTeamName(storedTeamName);
+            setUsername(storedUsername);
         }
     }, []);
 
@@ -28,6 +31,7 @@ const Header = () => {
         localStorage.removeItem("teamName");
         localStorage.removeItem("teamId");
         localStorage.removeItem("adminToken");
+        localStorage.removeItem("username");
 
         setIsLoggedIn(false);
         setIsAdmin(false);
@@ -59,7 +63,7 @@ const Header = () => {
             <div className="auth-buttons">
                 {isLoggedIn ? (
                     <>
-                        <span className="welcome-text">Üdv, {teamName}!</span>
+                        <Link to="/profile" className="profile-link">Üdv, {username}!</Link>
                         <button onClick={handleLogout} className="logout-button">Kijelentkezés</button>
                     </>
                 ) : (
