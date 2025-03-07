@@ -8,7 +8,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
-    const [teamName, setTeamName] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
@@ -62,7 +62,7 @@ const Register = () => {
         if (isValid) {
             try {
                 const response = await axios.post("http://localhost:5001/api/register", {
-                    teamName,
+                    name, 
                     captainName: username,
                     email,
                     phone,
@@ -77,9 +77,8 @@ const Register = () => {
                     navigate("/login");
                 }, 2000);
 
-                
                 setUsername("");
-                setTeamName("");
+                setName("");
                 setEmail("");
                 setPhone("");
                 setPassword("");
@@ -104,8 +103,8 @@ const Register = () => {
                     <label>Felhasználónév:</label>
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
 
-                    <label>Csapatnév:</label>
-                    <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required />
+                    <label>Név:</label>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} required /> {/* "teamName" helyett "name" */}
 
                     <label>Email:</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
