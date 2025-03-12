@@ -24,7 +24,7 @@ router.post("/bookings", async (req, res) => {
             teamId = teamResult[0].CsapatID; 
         } else {
             
-            const guestTeamId = `teamvendeg${trackId.replace("palya", "")}`;
+            const guestTeamId = `teamvendeg${trackId.replace("room", "")}`;
 
             
             const checkGuestTeamQuery = `SELECT CsapatID FROM csapatok WHERE CsapatID = ? LIMIT 1`;
@@ -40,7 +40,7 @@ router.post("/bookings", async (req, res) => {
 
         
         const query = `
-            INSERT INTO foglalasok (palya_id, foglalas_idopont, csapat_id, nev, email, telefon)
+            INSERT INTO foglalasok (room_id, foglalas_idopont, csapat_id, nev, email, telefon)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
         await db.query(query, [trackId, bookingDatetime, teamId, name, email, phone]);

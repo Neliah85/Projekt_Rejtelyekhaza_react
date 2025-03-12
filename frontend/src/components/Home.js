@@ -3,15 +3,15 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 
-import palya1 from "../assets/images/palya1.jpg";
-import palya2 from "../assets/images/palya2.jpg";
-import palya3 from "../assets/images/palya3.jpg";
-import palya4 from "../assets/images/palya4.jpg";
-import palya5 from "../assets/images/palya5.jpg";
-import palya6 from "../assets/images/palya6.jpg";
-import palya7 from "../assets/images/palya7.jpg";
-import palya8 from "../assets/images/palya8.jpg";
-import palya9 from "../assets/images/palya9.jpg";
+import room1 from "../assets/images/room1.jpg";
+import room2 from "../assets/images/room2.jpg";
+import room3 from "../assets/images/room3.jpg";
+import room4 from "../assets/images/room4.jpg";
+import room5 from "../assets/images/room5.jpg";
+import room6 from "../assets/images/room6.jpg";
+import room7 from "../assets/images/room7.jpg";
+import room8 from "../assets/images/room8.jpg";
+import room9 from "../assets/images/room9.jpg";
 
 
 const slides = [
@@ -31,15 +31,15 @@ const Home = () => {
     }, []);
 
     const rooms = [
-        { id: "palya1", name: "Menekülés az iskolából", img: palya1 },
-        { id: "palya2", name: "A pedellus bosszúja", img: palya2 },
-        { id: "palya3", name: "A tanári titkai", img: palya3 },
-        { id: "palya4", name: "A takarítónő visszanéz", img: palya4 },
-        { id: "palya5", name: "Szabadulás Kódja", img: palya5 },
-        { id: "palya6", name: "Időcsapda", img: palya6 },
-        { id: "palya7", name: "KódX Szoba", img: palya7 },
-        { id: "palya8", name: "Kalandok Kamrája", img: palya8 },
-        { id: "palya9", name: "Titkok Labirintusa", img: palya9 }
+        { id: "room1", name: "Menekülés az iskolából", img: room1 },
+        { id: "room2", name: "A pedellus bosszúja", img: room2 },
+        { id: "room3", name: "A tanári titkai", img: room3 },
+        { id: "room4", name: "A takarítónő visszanéz", img: room4 },
+        { id: "room5", name: "Szabadulás Kódja", img: room5 },
+        { id: "room6", name: "Időcsapda", img: room6 },
+        { id: "room7", name: "KódX Szoba", img: room7 },
+        { id: "room8", name: "Kalandok Kamrája", img: room8 },
+        { id: "room9", name: "Titkok Labirintusa", img: room9 }
     ];
 
     return (

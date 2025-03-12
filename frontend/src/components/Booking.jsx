@@ -5,15 +5,15 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const tracks = {
-    palya1: "Menekülés az iskolából",
-    palya2: "A pedellus bosszúja",
-    palya3: "A tanári titkai",
-    palya4: "A takarítónő visszanéz",
-    palya5: "Szabadulás Kódja",
-    palya6: "Időcsapda",
-    palya7: "KódX Szoba",
-    palya8: "Kalandok Kamrája",
-    palya9: "Titkok Labirintusa"
+    room1: "Menekülés az iskolából",
+    room2: "A pedellus bosszúja",
+    room3: "A tanári titkai",
+    room4: "A takarítónő visszanéz",
+    room5: "Szabadulás Kódja",
+    room6: "Időcsapda",
+    room7: "KódX Szoba",
+    room8: "Kalandok Kamrája",
+    room9: "Titkok Labirintusa"
 };
 
 const Booking = () => {

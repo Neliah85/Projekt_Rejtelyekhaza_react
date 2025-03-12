@@ -26,7 +26,7 @@ router.get("/available-times", async (req, res) => {
         const query = `
             SELECT DISTINCT TIME_FORMAT(TIME(foglalas_idopont), '%H:%i') AS bookedTime
             FROM foglalasok
-            WHERE palya_id = ? AND DATE(foglalas_idopont) = ?
+            WHERE room_id = ? AND DATE(foglalas_idopont) = ?
         `;
 
         const [results] = await db.query(query, [trackId, date]);
