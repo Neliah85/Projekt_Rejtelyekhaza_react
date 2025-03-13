@@ -26,7 +26,7 @@ const Booking = () => {
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
 
-    useEffect(() => {
+    /* useEffect(() => {
         const userToken = localStorage.getItem("token");
         
         if (!userToken) {
@@ -44,7 +44,7 @@ const Booking = () => {
             }
         };
         fetchUserData();
-    }, [navigate]);
+    }, [navigate]); */
 
     useEffect(() => {
         if (selectedDate) {
@@ -74,11 +74,11 @@ const Booking = () => {
             return;
         }
         const bookingData = {
-            trackId: id,
+            trackId: id, //*roomid
             date: selectedDate,
             time: selectedTime,
-            name: userData.name,
-            email: userData.email,
+            name: userData.name, //*teamid kell, mert name nem lesz a db-be
+            email: userData.email, //*available??
             phone: userData.phone,
             teamName,
         };
@@ -105,7 +105,7 @@ const Booking = () => {
             </>
         );
     }
-
+    //*ha van user adatok alatt csapatnév azt is húzza be automatikusan, nem szerkeszthetőre, ha nincs legyen megadható, de lehet null
     return (
         <>
             <Header />
@@ -127,9 +127,9 @@ const Booking = () => {
                             ))}
                         </select>
 
-                        <label>Csapatnév:</label>
-                        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required />
-
+                        <label>Csapatnév:</label> 
+                        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required /> 
+                       
                         <label>Név:</label>
                         <input type="text" value={userData.name} readOnly />
 

@@ -9,7 +9,7 @@ const Profile = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    useEffect(() => {
+   /* useEffect(() => {
         const userToken = localStorage.getItem("token");
         
         if (!userToken) {
@@ -27,7 +27,7 @@ const Profile = () => {
             }
         };
         fetchUserData();
-    }, [navigate]);
+    }, [navigate]);*/
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -46,7 +46,7 @@ const Profile = () => {
     return (
         <>
             <Header />
-            <main className="profile-container">
+            <main className="auth-container">
                 <h1>Profil</h1>
                 <form onSubmit={handleSave}>
                     <label>Felhasználónév:</label>
