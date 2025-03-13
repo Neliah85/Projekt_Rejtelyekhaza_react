@@ -82,11 +82,22 @@ const TrackPage = () => {
     return (
         <div>
             <Header />
-            <div>
+            <div className="tracks-list"> 
                 <h1>{track.name}</h1>
+                <div className="challenge-table"><h2>A pálya legjobbjai</h2>
+                <table className="challenge-table">
+                    <thead>
+                            <tr>
+                            <th>Helyezés</th>
+                            <th>Csapatnév</th>
+                            <th>Kijutási idő</th>
+                            </tr>
+                    </thead>                
+                </table>
+                </div>
                 <img src={track.image} alt={track.name} />
                 <p>{track.description}</p>
-                <button onClick={handleBookingClick}>Foglalás</button>
+                <button onClick={handleBookingClick} className="button">Foglalás</button>
             </div>
             <Footer />
         </div>

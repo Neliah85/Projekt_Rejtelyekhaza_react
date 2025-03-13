@@ -6,7 +6,7 @@ import axios from "axios";
 
 const Admin = () => {
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
     const [tracks, setTracks] = useState([]);
     const [selectedTrack, setSelectedTrack] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
@@ -16,7 +16,7 @@ const Admin = () => {
     const [maintenanceMode, setMaintenanceMode] = useState({});
     const [error, setError] = useState("");
 
-    useEffect(() => {
+   /* useEffect(() => {
         const adminToken = localStorage.getItem("adminToken");
         if (!adminToken) {
             navigate("/login");
@@ -25,7 +25,7 @@ const Admin = () => {
             fetchTracks();
             fetchUsers();
         }
-    }, [navigate]);
+    }, [navigate]);*/
 
     const fetchTracks = async () => {
         try {
@@ -160,10 +160,8 @@ const Admin = () => {
                         <input type="text" />
                         <label>Foglalt időpont:</label>
                         <input type="datetime" />
-                        <label>Ajtó Zár:</label>
-                        <input type="time" />
-                        <label>Ajtó Nyit:</label>
-                        <input type="time" />
+                        <label>Eredmény</label>
+                        <input type="time" />                        
                         <label>Kijutottak?</label>
                         <input type="checkbox" />
                         <button>Hozzáadás</button>

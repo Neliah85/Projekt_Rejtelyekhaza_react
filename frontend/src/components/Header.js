@@ -54,7 +54,7 @@ const Header = () => {
                     <li><Link to="/contact" className="menu-button">Kapcsolat</Link></li>
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
                     <li><Link to="/profile" className="menu-button">Profil</Link></li>
-
+                    <li><Link to="/admin" className="menu-button">Admin</Link></li>
                     {/* Admin menüpont csak bejelentkezett adminnak */}
                     {isAdmin && <li><Link to="/admin" className="menu-button">Admin</Link></li>}
                     

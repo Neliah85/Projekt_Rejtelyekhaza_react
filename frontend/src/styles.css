@@ -166,6 +166,61 @@ main {
     background-color: #A83D30;
 }
 
+.profile-container {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 400px;
+    margin: 100px auto;
+    background: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Formázás a beviteli mezőkhöz */
+.profile-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Középre igazítja a mezőket */
+    gap: 15px;
+    width: 100%;
+}
+
+/* Label stílus */
+.profile-container label {
+    font-weight: bold;
+    color: white;
+    text-align: left;
+    width: 100%;
+}
+
+/* Beviteli mezők */
+.profile-container input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    width: 90%;
+    text-align: left;
+}
+
+/* Kisebb gombméret és középre igazítás */
+.profile-container button {
+    background-color: #CF5443;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    transition: background 0.3s;
+    width: 50%;
+}
+
+.profile-container button:hover {
+    background-color: #A83D30;
+}
+
 /* Hibajelzés */
 .error {
     color: red;
@@ -1302,3 +1357,21 @@ p {
 .time-slot.available:hover {
     background-color: #45a049;
 }
+
+.challenge-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    
+}
+
+.challenge-table th, .user-table td {
+    border: 2px solid #f7d765;
+    padding: 10px;
+    text-align: center;
+}
+
+.challenge-table th {
+    background-color: #181515;
+    color: #FFFCFC;
+    }

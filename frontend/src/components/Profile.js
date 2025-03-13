@@ -46,7 +46,7 @@ const Profile = () => {
     return (
         <>
             <Header />
-            <main className="auth-container">
+            <main className="profile-container">
                 <h1>Profil</h1>
                 <form onSubmit={handleSave}>
                     <label>Felhasználónév:</label>
@@ -67,7 +67,7 @@ const Profile = () => {
                     <label>Új jelszó:</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Ha nem akarod módosítani, hagyd üresen" />
                     
-                    <button type="submit">Mentés</button>
+                    <button type="profile-container button">Mentés</button>
                 </form>
             </main>
             <Footer />
