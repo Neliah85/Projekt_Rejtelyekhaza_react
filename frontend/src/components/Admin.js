@@ -29,7 +29,7 @@ const Admin = () => {
 
     const fetchTracks = async () => {
         try {
-            const response = await axios.get("http://localhost:5001/tracks");
+            const response = await axios.get("http://localhost:5000/tracks");
             setTracks(response.data);
         } catch (error) {
             setError("Nem sikerült betölteni a pályákat.");
@@ -38,7 +38,7 @@ const Admin = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get("http://localhost:5001/users");
+            const response = await axios.get("http://localhost:5000/users");
             setUsers(response.data);
         } catch (error) {
             setError("Nem sikerült betölteni a felhasználókat.");

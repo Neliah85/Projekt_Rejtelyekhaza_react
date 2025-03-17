@@ -37,7 +37,7 @@ const Booking = () => {
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("http://localhost:5001/api/user-data");
+                const response = await axios.get("http://localhost:5000/api/user-data");
                 setUserData(response.data);
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
@@ -48,7 +48,7 @@ const Booking = () => {
 
     useEffect(() => {
         if (selectedDate) {
-            axios.get("http://localhost:5001/api/available-times", {
+            axios.get("http://localhost:5000/api/available-times", {
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
@@ -83,7 +83,7 @@ const Booking = () => {
             teamName,
         };
         try {
-            const response = await axios.post("http://localhost:5001/api/bookings", bookingData, {
+            const response = await axios.post("http://localhost:5000/api/bookings", bookingData, {
                 headers: { "Content-Type": "application/json" }
             });
             alert(response.data.message);

@@ -20,7 +20,7 @@ const Profile = () => {
         
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("http://localhost:5001/api/user-profile");
+                const response = await axios.get("http://localhost:5000/api/user-profile");
                 setUserData(response.data);
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
@@ -33,7 +33,7 @@ const Profile = () => {
         e.preventDefault();
         try {
             const updatedData = { ...userData, password: password || undefined };
-            await axios.put("http://localhost:5001/api/update-profile", updatedData, {
+            await axios.put("http://localhost:5000/api/update-profile", updatedData, {
                 headers: { "Content-Type": "application/json" }
             });
             alert("Profil sikeresen frissítve!");
