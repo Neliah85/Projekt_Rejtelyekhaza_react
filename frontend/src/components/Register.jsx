@@ -61,12 +61,12 @@ const Register = () => {
 
         if (isValid) {
             try {
-                const response = await axios.post("http://localhost:5000/api/register", {
-                    name, 
-                    captainName: username,
+                const response = await axios.post("http://localhost:5000/Registry", {
+                    realName: name,
+                    nickName: username,
                     email,
                     phone,
-                    password
+                    hash: password // Csak a nyers jelszót küldjük
                 });
 
                 setSuccessMessage(response.data.message);
