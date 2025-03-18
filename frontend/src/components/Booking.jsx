@@ -52,20 +52,24 @@ const Booking = () => {
                 params: { trackId: id, date: selectedDate }
             })
             .then(response => {
+                // A foglalt időpontok az API válaszában
+                const bookedTimes = response.data.bookedTimes || [];
+                // Az összes időpont listája
                 const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
-                const bookedTimes = Array.isArray(response.data.bookedTimes)
-                    ? response.data.bookedTimes.map(time => time.replace(/^0/, ""))
-                    : [];
+                // Az elérhető időpontok, amelyek nincsenek a foglaltak között
                 const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
-                setAvailableTimes(freeTimes);
-                setSelectedTime("");
+    
+                setAvailableTimes(freeTimes);  // Elérhető időpontok beállítása
+                setSelectedTime("");  // A kiválasztott időpont resetelése
             })
             .catch(error => {
                 console.error("Hiba az idősávok betöltésekor:", error);
-                setAvailableTimes([]);
+                setAvailableTimes([]);  // Hiba esetén üres lista
             });
         }
     }, [selectedDate, id]);
+    
+    
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -74,13 +78,11 @@ const Booking = () => {
             return;
         }
         const bookingData = {
-            trackId: id, //*roomid
+            trackId: id,
             date: selectedDate,
             time: selectedTime,
-            name: userData.name, //*teamid kell, mert name nem lesz a db-be
-            email: userData.email, //*available??
-            phone: userData.phone,
-            teamName,
+            teamId: userData.teamId || null, // Ha van teamId, azt küldjük
+            teamName: teamName || null, // Csak ha nincs már csapatnév megadva
         };
         try {
             const response = await axios.post("http://localhost:5000/api/bookings", bookingData, {
@@ -127,8 +129,17 @@ const Booking = () => {
                             ))}
                         </select>
 
-                        <label>Csapatnév:</label> 
-                        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} required /> 
+                        <label>Csapatnév:</label>
+                            {userData.teamName ? (
+                                <input type="text" value={userData.teamName} disabled />
+                            ) : (
+                                <input
+                                    type="text"
+                                    value={teamName}
+                                    onChange={(e) => setTeamName(e.target.value)}
+                                    placeholder="Add meg a csapatnevet"
+                                />
+                            )}
                        
                         <label>Név:</label>
                         <input type="text" value={userData.name} readOnly />
