@@ -34,12 +34,21 @@ const Header = () => {
         }
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-        setIsAdmin(false);
-        setUser(null);
-        navigate("/");
+    const handleLogout = async () => {
+        const token = localStorage.getItem("token");
+    
+        try {
+            await axios.post(`http://localhost:5000/Logout/${token}`);
+    
+            localStorage.removeItem("token");
+            setIsLoggedIn(false);
+            setIsAdmin(false);
+            setUser(null);
+            navigate("/");
+        } catch (error) {
+            console.error("Hiba a kijelentkezés során:", error);
+            
+        }
     };
 
     return (

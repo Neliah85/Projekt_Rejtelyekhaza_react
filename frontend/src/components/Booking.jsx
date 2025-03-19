@@ -28,16 +28,15 @@ const Booking = () => {
 
     useEffect(() => {
         const userToken = localStorage.getItem("token");
-        
+
         if (!userToken) {
             navigate("/login");
             return;
         }
-    
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/user-data");
+                const response = await axios.get(`http://localhost:5000/Users/${userToken}`);
                 setUserData(response.data);
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
@@ -51,25 +50,19 @@ const Booking = () => {
             axios.get("http://localhost:5000/api/available-times", {
                 params: { trackId: id, date: selectedDate }
             })
-            .then(response => {
-                // A foglalt időpontok az API válaszában
-                const bookedTimes = response.data.bookedTimes || [];
-                // Az összes időpont listája
-                const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
-                // Az elérhető időpontok, amelyek nincsenek a foglaltak között
-                const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
-    
-                setAvailableTimes(freeTimes);  // Elérhető időpontok beállítása
-                setSelectedTime("");  // A kiválasztott időpont resetelése
-            })
-            .catch(error => {
-                console.error("Hiba az idősávok betöltésekor:", error);
-                setAvailableTimes([]);  // Hiba esetén üres lista
-            });
+                .then(response => {
+                    const bookedTimes = response.data.bookedTimes || [];
+                    const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
+                    const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
+                    setAvailableTimes(freeTimes);
+                    setSelectedTime("");
+                })
+                .catch(error => {
+                    console.error("Hiba az idősávok betöltésekor:", error);
+                    setAvailableTimes([]);
+                });
         }
     }, [selectedDate, id]);
-    
-    
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -77,15 +70,16 @@ const Booking = () => {
             alert("Válassz egy szabad idősávot!");
             return;
         }
+        const token = localStorage.getItem("token");
         const bookingData = {
             trackId: id,
             date: selectedDate,
             time: selectedTime,
-            teamId: userData.teamId || null, // Ha van teamId, azt küldjük
-            teamName: teamName || null, // Csak ha nincs már csapatnév megadva
+            teamId: userData.teamId || null,
+            teamName: teamName || null,
         };
         try {
-            const response = await axios.post("http://localhost:5000/api/bookings", bookingData, {
+            const response = await axios.post(`http://localhost:5000/Booking/${token}`, bookingData, {
                 headers: { "Content-Type": "application/json" }
             });
             alert(response.data.message);
@@ -107,7 +101,7 @@ const Booking = () => {
             </>
         );
     }
-    //*ha van user adatok alatt csapatnév azt is húzza be automatikusan, nem szerkeszthetőre, ha nincs legyen megadható, de lehet null
+
     return (
         <>
             <Header />
@@ -130,17 +124,17 @@ const Booking = () => {
                         </select>
 
                         <label>Csapatnév:</label>
-                            {userData.teamName ? (
-                                <input type="text" value={userData.teamName} disabled />
-                            ) : (
-                                <input
-                                    type="text"
-                                    value={teamName}
-                                    onChange={(e) => setTeamName(e.target.value)}
-                                    placeholder="Add meg a csapatnevet"
-                                />
-                            )}
-                       
+                        {userData.teamName ? (
+                            <input type="text" value={userData.teamName} disabled />
+                        ) : (
+                            <input
+                                type="text"
+                                value={teamName}
+                                onChange={(e) => setTeamName(e.target.value)}
+                                placeholder="Add meg a csapatnevet"
+                            />
+                        )}
+
                         <label>Név:</label>
                         <input type="text" value={userData.userName} readOnly />
 

@@ -25,11 +25,7 @@ const Profile = () => {
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/user", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await axios.get(`http://localhost:5000/Users/${token}`); // Módosított végpont
                 setUserData({
                     realName: response.data.realName,
                     nickName: response.data.nickName,
@@ -52,12 +48,7 @@ const Profile = () => {
                 ...userData,
                 password: password || undefined,
             };
-            await axios.put("http://localhost:5000/api/update-profile", updatedData, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            await axios.post(`http://localhost:5000/Users/${token}`, updatedData); // Módosított végpont és HTTP metódus
             alert("Profil sikeresen frissítve!");
         } catch (error) {
             console.error("Hiba a profil frissítésekor:", error);
@@ -78,36 +69,28 @@ const Profile = () => {
                     <input
                         type="text"
                         value={userData.realName}
-                        onChange={(e) =>
-                            setUserData({ ...userData, realName: e.target.value })
-                        }
+                        onChange={(e) => setUserData({ ...userData, realName: e.target.value })}
                     />
 
                     <label>Email:</label>
                     <input
                         type="email"
                         value={userData.email}
-                        onChange={(e) =>
-                            setUserData({ ...userData, email: e.target.value })
-                        }
+                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                     />
 
                     <label>Telefonszám:</label>
                     <input
                         type="text"
                         value={userData.phone}
-                        onChange={(e) =>
-                            setUserData({ ...userData, phone: e.target.value })
-                        }
+                        onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                     />
 
                     <label>Csapat ID:</label>
                     <input
                         type="text"
                         value={userData.teamId || ""}
-                        onChange={(e) =>
-                            setUserData({ ...userData, teamId: e.target.value })
-                        }
+                        onChange={(e) => setUserData({ ...userData, teamId: e.target.value })}
                     />
 
                     <label>Új jelszó:</label>
@@ -118,7 +101,7 @@ const Profile = () => {
                         placeholder="Ha nem akarod módosítani, hagyd üresen"
                     />
 
-                    <button type="profile-container button">Mentés</button>
+                    <button type="submit" className="profile-container button">Mentés</button>
                 </form>
             </main>
             <Footer />
