@@ -69,7 +69,7 @@ const PrivacyPolicy = () => {
                 <p><strong>Cégnév:</strong> BKÁJZSMT Kft.</p>
                 <p><strong>Cím:</strong> Miskolc, Palóczy László utca 3, 3525</p>
                 <p><strong>Telefonszám:</strong> <a href="tel:+36123456789">+36 12 345 6789</a></p>
-                <p><strong>Email:</strong> <a href="mailto:info@szabaduloszoba.hu">info@szabaduloszoba.hu</a></p>
+                <p><strong>Email:</strong> <a href="mailto:rejtelyekhaza@gmail.com">rejtelyekhaza@gmail.com</a></p>
 
             </main>
             <Footer />
