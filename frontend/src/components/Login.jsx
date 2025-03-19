@@ -6,7 +6,7 @@ import Footer from "./Footer";
 
 const Login = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState(""); // Email helyett username
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -15,14 +15,22 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:5000/api/login", {
-                email,
-                password,
+            
+            const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${username}`);
+            const salt = saltResponse.data;
+
+            
+            const hashedPassword = hashPasswordWithSalt(password, salt);
+
+            
+            const loginResponse = await axios.post("http://localhost:5000/Login", {
+                userName: username, 
+                password: hashedPassword,
             });
 
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("realName", response.data.realName); // teamName helyett realName
-            localStorage.setItem("teamId", response.data.teamId);
+            localStorage.setItem("token", loginResponse.data.token);
+            localStorage.setItem("realName", loginResponse.data.realName);
+            localStorage.setItem("teamId", loginResponse.data.teamId);
 
             setError("");
             setSuccessMessage("Sikeres bejelentkezés!");
@@ -33,9 +41,16 @@ const Login = () => {
             }, 2000);
         } catch (error) {
             console.error("Hiba a bejelentkezés során:", error);
-            setError(error.response?.data?.message || "Hiba történt a bejelentkezés során."); // error helyett message
+            setError(error.response?.data?.message || "Hiba történt a bejelentkezés során.");
         }
     };
+
+    
+    function hashPasswordWithSalt(password, salt) {
+        
+        const saltedPassword = password + salt;
+        return saltedPassword; 
+    }
 
     return (
         <>
@@ -46,8 +61,8 @@ const Login = () => {
                 {successMessage && <p className="success">{successMessage}</p>}
 
                 <form onSubmit={handleLogin}>
-                    <label>Email:</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <label>Felhasználónév:</label>
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required /> 
 
                     <label>Jelszó:</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
