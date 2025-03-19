@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { v4 as uuidv4 } from 'uuid'; // Importáljuk a uuid csomagot
+import { v4 as uuidv4 } from 'uuid';
+import CryptoJS from 'crypto-js';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -63,15 +64,22 @@ const Register = () => {
 
         if (isValid) {
             try {
-                const salt = uuidv4(); 
+                const salt = uuidv4();
+                const passwordWithSalt = password + salt; // VAGY salt + password;
+
+                // Hash-elés a frontend oldalon
+                const hash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
+
                 const response = await axios.post("http://localhost:5000/Registry", {
                     RealName: realName,
                     NickName: nickName,
                     Email: email,
                     Phone: phone,
-                    Hash: password,
-                    Salt: salt, 
+                    Hash: hash, // A hash-elt jelszó + salt
+                    Salt: salt
                 });
+
+               
 
                 setSuccessMessage(response.data.message);
                 setError("");
