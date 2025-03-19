@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -118,7 +119,7 @@ const Register = () => {
                     <div className="password-wrapper">
                         <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? "" : "️"}
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
                     </div>
                     {passwordError && <p className="error">{passwordError}</p>}
@@ -127,7 +128,7 @@ const Register = () => {
                     <div className="password-wrapper">
                         <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                         <button type="button" className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                            {showConfirmPassword ? "" : "️"}
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
                     </div>
                     {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}
