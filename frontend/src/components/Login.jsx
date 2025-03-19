@@ -21,8 +21,8 @@ const Login = () => {
             const saltedPassword = hashPasswordWithSalt(password, salt);
 
             const loginResponse = await axios.post("http://localhost:5000/Login", {
-                LoginName: username, // Javított mezőnév
-                TmpHash: saltedPassword, // Javított mezőnév
+                LoginName: username, 
+                TmpHash: saltedPassword,
             });
 
             localStorage.setItem("token", loginResponse.data.token);
