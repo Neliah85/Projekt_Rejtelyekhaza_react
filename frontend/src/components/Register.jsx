@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { v4 as uuidv4 } from 'uuid'; // Importáljuk a uuid csomagot
 
 const Register = () => {
     const navigate = useNavigate();
@@ -62,12 +63,14 @@ const Register = () => {
 
         if (isValid) {
             try {
+                const salt = uuidv4(); // Generálunk egy véletlenszerű Salt értéket
                 const response = await axios.post("http://localhost:5000/Registry", {
                     RealName: realName,
                     NickName: nickName,
                     Email: email,
                     Phone: phone,
                     Hash: password,
+                    Salt: salt, // Hozzáadjuk a Salt értéket a kéréshez
                 });
 
                 setSuccessMessage(response.data.message);
