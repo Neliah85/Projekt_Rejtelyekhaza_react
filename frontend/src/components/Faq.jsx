@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "axios"; // axios importálása
 import Header from "./Header";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
@@ -18,24 +18,24 @@ const faqs = [
 const FAQ = () => {
     const [question, setQuestion] = useState("");
     const [showPopup, setShowPopup] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(""); // Hibaüzenet állapot
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => { // async hozzáadása
         e.preventDefault();
         if (question.trim() === "") return;
 
         try {
-            const response = await axios.post("http://localhost:5000/api/questions", {
+            await axios.post("http://localhost:5000/api/questions", { // API végpont
                 question,
             });
 
             setShowPopup(true);
             setTimeout(() => setShowPopup(false), 3000);
             setQuestion("");
-            setError("");
+            setError(""); // Hibaüzenet törlése
         } catch (error) {
             console.error("Hiba a kérdés küldése során:", error);
-            setError(error.response?.data?.message || "Hiba történt a kérdés küldése során. Kérjük, próbálja újra.");
+            setError("Hiba történt a kérdés küldése során. Kérjük, próbálja újra."); // Hibaüzenet beállítása
         }
     };
 
@@ -46,6 +46,7 @@ const FAQ = () => {
                 <h1>Gyakran Ismételt Kérdések</h1>
                 <p>Itt megtalálod a leggyakrabban felmerülő kérdéseket és válaszokat.</p>
 
+                {/* Kérdés beküldő űrlap */}
                 <form className="faq-form" onSubmit={handleSubmit}>
                     <textarea
                         placeholder="Írd le a kérdésed..."
@@ -56,13 +57,15 @@ const FAQ = () => {
                     <button type="submit">Kérdés beküldése</button>
                 </form>
 
+                {/* Felugró ablak a beküldés után */}
                 {showPopup && (
                     <div className="popup">
                         <p>A kérdésedet megkaptuk! Választ 48 órán belül itt olvashatod.</p>
                     </div>
                 )}
-                {error && <p className="error">{error}</p>}
+                {error && <p className="error">{error}</p>} {/* Hibaüzenet megjelenítése */}
 
+                {/* GYIK lista */}
                 <div className="faq-list">
                     {faqs.map((faq, index) => (
                         <div key={index} className="faq-item">
