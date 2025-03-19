@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import CryptoJS from 'crypto-js';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,36 +19,32 @@ const Login = () => {
             const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${username}`);
             const salt = saltResponse.data;
 
-            const saltedPassword = hashPasswordWithSalt(password, salt);
+            const tmpHash = hashPasswordWithSalt(password, salt);
 
             const loginResponse = await axios.post("http://localhost:5000/Login", {
-                LoginName: username, 
-                TmpHash: saltedPassword,
+                LoginName: username,
+                TmpHash: tmpHash,
             });
 
             localStorage.setItem("token", loginResponse.data.token);
             localStorage.setItem("realName", loginResponse.data.realName);
-            localStorage.setItem("teamId", loginResponse.data.teamId);           
-
+            localStorage.setItem("teamId", loginResponse.data.teamId);
+            
             setError("");
             setSuccessMessage("Sikeres bejelentkezés!");
-
+            
             setTimeout(() => {
                 setSuccessMessage("");
                 navigate("/");
             }, 2000);
         } catch (error) {
             console.error("Hiba a bejelentkezés során:", error);
-            if (error.response && error.response.data && error.response.data.message) {
-                setError(error.response.data.message); 
-            } else {
-                setError("Hiba történt a bejelentkezés során.");
-            }
+            setError("Hiba történt a bejelentkezés során.");
         }
     };
 
     function hashPasswordWithSalt(password, salt) {
-        return password + salt; 
+        return CryptoJS.SHA256(password + salt).toString();
     }
 
     return (

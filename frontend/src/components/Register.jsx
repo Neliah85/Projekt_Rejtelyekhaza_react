@@ -63,14 +63,14 @@ const Register = () => {
 
         if (isValid) {
             try {
-                const salt = uuidv4(); // Generálunk egy véletlenszerű Salt értéket
+                const salt = uuidv4(); 
                 const response = await axios.post("http://localhost:5000/Registry", {
                     RealName: realName,
                     NickName: nickName,
                     Email: email,
                     Phone: phone,
                     Hash: password,
-                    Salt: salt, // Hozzáadjuk a Salt értéket a kéréshez
+                    Salt: salt, 
                 });
 
                 setSuccessMessage(response.data.message);
