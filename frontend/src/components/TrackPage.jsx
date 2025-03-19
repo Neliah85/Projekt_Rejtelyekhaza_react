@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom"; // useNavigate importálása
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -65,39 +65,47 @@ const TrackPage = () => {
     const { id } = useParams();
     const track = tracks[id];
     const navigate = useNavigate();
-    const userToken = localStorage.getItem('userToken');
 
-    const handleBookingClick = () => {
+    useEffect(() => {
+        const userToken = localStorage.getItem("userToken");
         if (!userToken) {
             navigate("/login");
-            return; 
         }
+    }, [navigate]);
+
+    const handleBookingClick = () => {
         navigate(`/booking/${id}`);
     };
 
     if (!track) {
-        return <div> A pálya nem található! </div>; 
+        return <div>A pálya nem található!</div>;
     }
 
     return (
         <div>
             <Header />
-            <div className="tracks-list"> 
+            <div className="tracks-list">
                 <h1>{track.name}</h1>
-                <div className="challenge-table"><h2>A pálya legjobbjai</h2>
-                <table className="challenge-table">
-                    <thead>
+                <div className="challenge-table">
+                    <h2>A pálya legjobbjai</h2>
+                    <table className="challenge-table">
+                        <thead>
                             <tr>
-                            <th>Helyezés</th>
-                            <th>Csapatnév</th>
-                            <th>Kijutási idő</th>
+                                <th>Helyezés</th>
+                                <th>Csapatnév</th>
+                                <th>Kijutási idő</th>
                             </tr>
-                    </thead>                
-                </table>
+                        </thead>
+                        <tbody>
+                            {/* challenge-table adatok */}
+                        </tbody>
+                    </table>
                 </div>
                 <img src={track.image} alt={track.name} />
                 <p>{track.description}</p>
-                <button onClick={handleBookingClick} className="button">Foglalás</button>
+                <button onClick={handleBookingClick} className="button">
+                    Foglalás
+                </button>
             </div>
             <Footer />
         </div>

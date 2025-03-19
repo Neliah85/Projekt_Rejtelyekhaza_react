@@ -7,8 +7,8 @@ import Footer from "./Footer";
 const Register = () => {
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
-    const [name, setName] = useState("");
+    const [nickName, setNickName] = useState("");
+    const [realName, setRealName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
@@ -62,11 +62,11 @@ const Register = () => {
         if (isValid) {
             try {
                 const response = await axios.post("http://localhost:5000/Registry", {
-                    realName: name,
-                    nickName: username,
-                    email,
-                    phone,
-                    hash: password // Csak a nyers jelszót küldjük
+                    RealName: realName,
+                    NickName: nickName,
+                    Email: email,
+                    Phone: phone,
+                    Hash: password,
                 });
 
                 setSuccessMessage(response.data.message);
@@ -77,8 +77,8 @@ const Register = () => {
                     navigate("/login");
                 }, 2000);
 
-                setUsername("");
-                setName("");
+                setNickName("");
+                setRealName("");
                 setEmail("");
                 setPhone("");
                 setPassword("");
@@ -86,7 +86,7 @@ const Register = () => {
 
             } catch (error) {
                 console.error("Hiba a regisztráció során:", error);
-                setError(error.response?.data?.error || "Hiba történt a regisztráció során.");
+                setError(error.response?.data?.message || "Hiba történt a regisztráció során.");
             }
         }
     };
@@ -101,10 +101,10 @@ const Register = () => {
 
                 <form onSubmit={handleSubmit}>
                     <label>Felhasználónév:</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    <input type="text" value={nickName} onChange={(e) => setNickName(e.target.value)} required />
 
                     <label>Név:</label>
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} required /> {/* "teamName" helyett "name" */}
+                    <input type="text" value={realName} onChange={(e) => setRealName(e.target.value)} required />
 
                     <label>Email:</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
@@ -118,7 +118,7 @@ const Register = () => {
                     <div className="password-wrapper">
                         <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? "🙈" : "👁️"}
+                            {showPassword ? "" : "️"}
                         </button>
                     </div>
                     {passwordError && <p className="error">{passwordError}</p>}
@@ -127,7 +127,7 @@ const Register = () => {
                     <div className="password-wrapper">
                         <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                         <button type="button" className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                            {showConfirmPassword ? "🙈" : "👁️"}
+                            {showConfirmPassword ? "" : "️"}
                         </button>
                     </div>
                     {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}

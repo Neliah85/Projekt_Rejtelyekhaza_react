@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
@@ -17,13 +18,25 @@ const faqs = [
 const FAQ = () => {
     const [question, setQuestion] = useState("");
     const [showPopup, setShowPopup] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (question.trim() === "") return;
-        setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 3000); 
-        setQuestion(""); 
+
+        try {
+            const response = await axios.post("http://localhost:5000/api/questions", {
+                question,
+            });
+
+            setShowPopup(true);
+            setTimeout(() => setShowPopup(false), 3000);
+            setQuestion("");
+            setError("");
+        } catch (error) {
+            console.error("Hiba a kérdés küldése során:", error);
+            setError(error.response?.data?.message || "Hiba történt a kérdés küldése során. Kérjük, próbálja újra.");
+        }
     };
 
     return (
@@ -33,7 +46,6 @@ const FAQ = () => {
                 <h1>Gyakran Ismételt Kérdések</h1>
                 <p>Itt megtalálod a leggyakrabban felmerülő kérdéseket és válaszokat.</p>
 
-                {/* Kérdés beküldő űrlap */}
                 <form className="faq-form" onSubmit={handleSubmit}>
                     <textarea
                         placeholder="Írd le a kérdésed..."
@@ -44,14 +56,13 @@ const FAQ = () => {
                     <button type="submit">Kérdés beküldése</button>
                 </form>
 
-                {/* Felugró ablak a beküldés után */}
                 {showPopup && (
                     <div className="popup">
                         <p>A kérdésedet megkaptuk! Választ 48 órán belül itt olvashatod.</p>
                     </div>
                 )}
+                {error && <p className="error">{error}</p>}
 
-                {/* GYIK lista */}
                 <div className="faq-list">
                     {faqs.map((faq, index) => (
                         <div key={index} className="faq-item">

@@ -721,6 +721,19 @@ p {
     transform: scale(1.05);
 }
 
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.preview-image {
+    max-width: 300px;
+    max-height: 300px;
+    margin-bottom: 10px;
+}
+
 /* Árak oldal stílus */
 .prices-container {
     text-align: center;
@@ -755,6 +768,10 @@ p {
 .prices-table tbody tr:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
+.table-responsive {
+    overflow-x: auto;
+}
+
 
 /* Egyedi ajánlat szöveg */
 .group-pricing {
@@ -1374,4 +1391,31 @@ p {
 .challenge-table th {
     background-color: #181515;
     color: #FFFCFC;
+    }
+
+    .privacy-policy-container {
+        text-align: left;
+        padding: 50px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        color: #FFFCFC;
+    }
+    
+    .privacy-policy-container h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .privacy-policy-container p {
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    
+    .privacy-policy-container ul {
+        margin-left: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .privacy-policy-container li {
+        margin-bottom: 10px;
     }

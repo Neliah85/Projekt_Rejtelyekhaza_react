@@ -14,6 +14,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Admin from "./components/Admin";
 import Profile from "./components/Profile";
+import PrivacyPolicy from './components/Privacy';
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
             </Routes>
         </Router>
     );

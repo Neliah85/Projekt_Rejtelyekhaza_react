@@ -6,7 +6,7 @@ import axios from "axios";
 
 const Admin = () => {
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Kezdetben false
     const [tracks, setTracks] = useState([]);
     const [selectedTrack, setSelectedTrack] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
@@ -16,7 +16,7 @@ const Admin = () => {
     const [maintenanceMode, setMaintenanceMode] = useState({});
     const [error, setError] = useState("");
 
-   /* useEffect(() => {
+    useEffect(() => {
         const adminToken = localStorage.getItem("adminToken");
         if (!adminToken) {
             navigate("/login");
@@ -25,7 +25,7 @@ const Admin = () => {
             fetchTracks();
             fetchUsers();
         }
-    }, [navigate]);*/
+    }, [navigate]);
 
     const fetchTracks = async () => {
         try {
@@ -51,7 +51,9 @@ const Admin = () => {
             return;
         }
         try {
-            const response = await axios.get(`http://localhost:5001/bookings?track=${selectedTrack}&date=${selectedDate}`);
+            const response = await axios.get(
+                `http://localhost:5001/bookings?track=${selectedTrack}&date=${selectedDate}`
+            );
             setBookings(response.data);
         } catch (error) {
             setError("Nem sikerült lekérdezni a foglalásokat.");
@@ -70,7 +72,7 @@ const Admin = () => {
     const toggleMaintenance = () => {
         setMaintenanceMode((prev) => ({
             ...prev,
-            [selectedMaintenanceTrack]: !prev[selectedMaintenanceTrack]
+            [selectedMaintenanceTrack]: !prev[selectedMaintenanceTrack],
         }));
     };
 
@@ -86,34 +88,54 @@ const Admin = () => {
                     <section className="admin-section">
                         <h2>Foglalások kezelése</h2>
                         <label>Pálya:</label>
-                        <select value={selectedTrack} onChange={(e) => setSelectedTrack(e.target.value)}>
+                        <select
+                            value={selectedTrack}
+                            onChange={(e) => setSelectedTrack(e.target.value)}
+                        >
                             <option value="">Válassz egy pályát</option>
                             {tracks.map((track) => (
-                                <option key={track.id} value={track.id}>{track.name}</option>
+                                <option key={track.id} value={track.id}>
+                                    {track.name}
+                                </option>
                             ))}
                         </select>
                         <label>Dátum:</label>
-                        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                        <input
+                            type="date"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                        />
                         <button onClick={fetchBookings}>Foglalások lekérése</button>
                         {bookings.map((booking) => (
                             <div key={booking.id}>
                                 {booking.time} - {booking.name}
-                                <button onClick={() => deleteBooking(booking.id)}>Törlés</button>
+                                <button onClick={() => deleteBooking(booking.id)}>
+                                    Törlés
+                                </button>
                             </div>
                         ))}
                     </section>
-                        {/* 2. Pályák karbantartása */}
-                        <section className="admin-section">
+                    {/* 2. Pályák karbantartása */}
+                    <section className="admin-section">
                         <h2>Pályák karbantartása</h2>
                         <label>Válassz egy pályát:</label>
-                        <select value={selectedMaintenanceTrack} onChange={(e) => setSelectedMaintenanceTrack(e.target.value)}>
+                        <select
+                            value={selectedMaintenanceTrack}
+                            onChange={(e) =>
+                                setSelectedMaintenanceTrack(e.target.value)
+                            }
+                        >
                             <option value="">Válassz egy pályát</option>
                             {tracks.map((track) => (
-                                <option key={track.id} value={track.id}>{track.name}</option>
+                                <option key={track.id} value={track.id}>
+                                    {track.name}
+                                </option>
                             ))}
                         </select>
                         <button onClick={toggleMaintenance}>
-                            {maintenanceMode[selectedMaintenanceTrack] ? "Karbantartás kikapcsolása" : "Karbantartás bekapcsolása"}
+                            {maintenanceMode[selectedMaintenanceTrack]
+                                ? "Karbantartás kikapcsolása"
+                                : "Karbantartás bekapcsolása"}
                         </button>
                     </section>
 
@@ -145,15 +167,19 @@ const Admin = () => {
                         </table>
                     </section>
 
-                    
                     {/* 4. Versenytábla kezelése */}
                     <section className="admin-section">
                         <h2>Versenytábla kezelése</h2>
                         <label>Pálya:</label>
-                        <select value={selectedTrack} onChange={(e) => setSelectedTrack(e.target.value)}>
+                        <select
+                            value={selectedTrack}
+                            onChange={(e) => setSelectedTrack(e.target.value)}
+                        >
                             <option value="">Válassz egy pályát</option>
                             {tracks.map((track) => (
-                                <option key={track.id} value={track.id}>{track.name}</option>
+                                <option key={track.id} value={track.id}>
+                                    {track.name}
+                                </option>
                             ))}
                         </select>
                         <label>Csapatnév:</label>
@@ -161,7 +187,7 @@ const Admin = () => {
                         <label>Foglalt időpont:</label>
                         <input type="datetime" />
                         <label>Eredmény</label>
-                        <input type="time" />                        
+                        <input type="time" />
                         <label>Kijutottak?</label>
                         <input type="checkbox" />
                         <button>Hozzáadás</button>

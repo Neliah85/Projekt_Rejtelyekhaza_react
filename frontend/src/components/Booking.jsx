@@ -22,11 +22,11 @@ const Booking = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState("");
-    const [userData, setUserData] = useState({ name: "", email: "", phone: "" });
+    const [userData, setUserData] = useState({ userName: "", email: "", phone: "" });
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
 
-    /* useEffect(() => {
+    useEffect(() => {
         const userToken = localStorage.getItem("token");
         
         if (!userToken) {
@@ -44,7 +44,7 @@ const Booking = () => {
             }
         };
         fetchUserData();
-    }, [navigate]); */
+    }, [navigate]);
 
     useEffect(() => {
         if (selectedDate) {
@@ -142,7 +142,7 @@ const Booking = () => {
                             )}
                        
                         <label>Név:</label>
-                        <input type="text" value={userData.name} readOnly />
+                        <input type="text" value={userData.userName} readOnly />
 
                         <label>Email:</label>
                         <input type="email" value={userData.email} readOnly />

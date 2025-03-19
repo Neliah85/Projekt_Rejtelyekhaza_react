@@ -1,41 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
+import axios from "axios"; // Importálás
 
 const Header = () => {
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [teamName, setTeamName] = useState("");
-    const [username, setUsername] = useState("");
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const adminToken = localStorage.getItem("adminToken");
-        const userToken = localStorage.getItem("token");
-        const storedTeamName = localStorage.getItem("teamName");
-        const storedUsername = localStorage.getItem("username");
-       
-        if (adminToken) {
-            setIsAdmin(true);
-        }
+        const token = localStorage.getItem("token");
 
-        if (userToken) {
+        if (token) {
             setIsLoggedIn(true);
-            setTeamName(storedTeamName);
-            setUsername(storedUsername);
+            axios
+                .get("/api/user", { 
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((response) => {
+                    setUser(response.data);
+                    if (response.data.roleId === 1) {
+                        setIsAdmin(true);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching user data:", error);
+                    setIsLoggedIn(false);
+                    localStorage.removeItem("token");
+                });
         }
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("teamName");
-        localStorage.removeItem("teamId");
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("username");
-
         setIsLoggedIn(false);
         setIsAdmin(false);
-        navigate("/"); 
+        setUser(null);
+        navigate("/");
     };
 
     return (
@@ -53,19 +57,16 @@ const Header = () => {
                     <li><Link to="/faq" className="menu-button">GYIK</Link></li>
                     <li><Link to="/contact" className="menu-button">Kapcsolat</Link></li>
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
-                    <li><Link to="/profile" className="menu-button">Profil</Link></li>
-                    <li><Link to="/admin" className="menu-button">Admin</Link></li>
-                    {/* Admin menüpont csak bejelentkezett adminnak */}
+                    <li><Link to="/privacy" className="menu-button">Adatvédelmi szabályzat</Link></li>
+                    {isLoggedIn && <li><Link to="/profile" className="menu-button">Profil</Link></li>}
                     {isAdmin && <li><Link to="/admin" className="menu-button">Admin</Link></li>}
-                    
                 </ul>
             </nav>
 
-            {/* ✅ Ha be van jelentkezve, kijelentkezés gomb jelenik meg */}
             <div className="auth-buttons">
                 {isLoggedIn ? (
                     <>
-                        <Link to="/profile" className="profile-link">Üdv, {username}!</Link>
+                        {user && <Link to="/profile" className="profile-link">Üdv, {user.nickName}!</Link>}
                         <button onClick={handleLogout} className="logout-button">Kijelentkezés</button>
                     </>
                 ) : (

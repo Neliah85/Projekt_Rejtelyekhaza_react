@@ -9,7 +9,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState(""); 
+    const [successMessage, setSuccessMessage] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -21,20 +21,19 @@ const Login = () => {
             });
 
             localStorage.setItem("token", response.data.token);
-            localStorage.setItem("teamName", response.data.teamName);
+            localStorage.setItem("realName", response.data.realName); // teamName helyett realName
             localStorage.setItem("teamId", response.data.teamId);
 
             setError("");
-            setSuccessMessage("Sikeres bejelentkezés!"); 
+            setSuccessMessage("Sikeres bejelentkezés!");
 
-            
             setTimeout(() => {
                 setSuccessMessage("");
                 navigate("/");
             }, 2000);
         } catch (error) {
             console.error("Hiba a bejelentkezés során:", error);
-            setError(error.response?.data?.error || "Hiba történt a bejelentkezés során.");
+            setError(error.response?.data?.message || "Hiba történt a bejelentkezés során."); // error helyett message
         }
     };
 
@@ -44,7 +43,7 @@ const Login = () => {
             <main className="auth-container">
                 <h2>Belépés</h2>
                 {error && <p className="error">{error}</p>}
-                {successMessage && <p className="success">{successMessage}</p>} {/* ✅ Üzenet megjelenítése */}
+                {successMessage && <p className="success">{successMessage}</p>}
 
                 <form onSubmit={handleLogin}>
                     <label>Email:</label>

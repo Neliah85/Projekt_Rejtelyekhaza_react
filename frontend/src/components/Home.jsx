@@ -20,6 +20,7 @@ const slides = [
     { id: 3, text: "🕵️‍♂️ Tavaszi kalandok: Jön az új horror szabadulószoba!", image: "/images/slide3.jpg" },
 ];
 
+
 const Home = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
 

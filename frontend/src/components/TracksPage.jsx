@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-
+import { Link } from "react-router-dom";
 
 import room1 from "../assets/images/room1.jpg";
 import room2 from "../assets/images/room2.jpg";
@@ -32,18 +32,19 @@ const TracksPage = () => {
             <Header />
             <main>
                 <h1>Pályák és Foglalás</h1>
-                
                 <p>Válaszd ki a számodra legizgalmasabb pályát, és kezdődjön a kaland!</p>
 
                 <div className="tracks-list">
                     {tracks.map((track) => (
                         <div key={track.id} className="track-item">
-                            <a href={`/booking/${track.id}`}>
+                            <Link to={`/booking/${track.id}`}>
                                 <img src={track.img} alt={track.name} width="320" height="233" />
-                            </a>
+                            </Link>
                             <h2>{track.name}</h2>
                             <p>{track.description}</p>
-                            <a href={`/booking/${track.id}`} className="button">Foglalás</a>
+                            <Link to={`/booking/${track.id}`} className="button">
+                                Foglalás
+                            </Link>
                         </div>
                     ))}
                 </div>

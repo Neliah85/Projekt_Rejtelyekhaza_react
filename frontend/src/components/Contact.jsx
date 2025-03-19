@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"; // axios importálása
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -10,20 +11,19 @@ const Contact = () => {
     const [emailError, setEmailError] = useState("");
     const [phoneError, setPhoneError] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [error, setError] = useState(""); // Hibaüzenet állapot
 
-    
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,3}$/;
         return emailRegex.test(email);
     };
 
-    
     const validatePhone = (phone) => {
         const phoneRegex = /^(?:\+36|06)[\s-]?(?:1|20|30|31|32|50|70|90)[\s-]?\d{3}[\s-]?\d{4}$/;
         return phoneRegex.test(phone);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => { // async hozzáadása
         e.preventDefault();
 
         let isValid = true;
@@ -43,12 +43,25 @@ const Contact = () => {
         }
 
         if (isValid) {
-            setFormSubmitted(true);
-            setTimeout(() => setFormSubmitted(false), 3000);
-            setName("");
-            setEmail("");
-            setPhone("");
-            setMessage("");
+            try {
+                await axios.post("http://localhost:5000/api/contact", { // API végpont
+                    name,
+                    email,
+                    phone,
+                    message,
+                });
+
+                setFormSubmitted(true);
+                setTimeout(() => setFormSubmitted(false), 3000);
+                setName("");
+                setEmail("");
+                setPhone("");
+                setMessage("");
+                setError(""); // Hibaüzenet törlése
+            } catch (error) {
+                console.error("Hiba az üzenet küldése során:", error);
+                setError("Hiba történt az üzenet küldése során. Kérjük, próbálja újra."); // Hibaüzenet beállítása
+            }
         }
     };
 
@@ -71,11 +84,11 @@ const Contact = () => {
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
 
                         <label>Email:</label>
-                        <input 
-                            type="email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value.toLowerCase())} 
-                            required 
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value.toLowerCase())}
+                            required
                         />
                         {emailError && <p className="error">{emailError}</p>}
 
@@ -94,6 +107,7 @@ const Contact = () => {
                             <p>Üzenetedet megkaptuk! Hamarosan válaszolunk.</p>
                         </div>
                     )}
+                    {error && <p className="error">{error}</p>} {/* Hibaüzenet megjelenítése */}
                 </section>
             </main>
             <Footer />
