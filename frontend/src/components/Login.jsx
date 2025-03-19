@@ -27,7 +27,7 @@ const Login = () => {
 
             localStorage.setItem("token", loginResponse.data.token);
             localStorage.setItem("realName", loginResponse.data.realName);
-            localStorage.setItem("teamId", loginResponse.data.teamId);
+            localStorage.setItem("teamId", loginResponse.data.teamId);           
 
             setError("");
             setSuccessMessage("Sikeres bejelentkezés!");
