@@ -33,8 +33,8 @@ const Login = () => {
 
 
             localStorage.setItem("token", loginResponse.data.token);
-            localStorage.setItem("realName", loginResponse.data.realName);
-            localStorage.setItem("teamId", loginResponse.data.teamId);
+            localStorage.setItem("username", username);
+            
 
             setError("");
             setSuccessMessage("Sikeres bejelentkezés!");
