@@ -25,7 +25,7 @@ const Booking = () => {
     const [userData, setUserData] = useState({ realName: "", email: "", phone: "" });
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
-    const [token, setToken] = useState(localStorage.getItem('token'));
+    const token = localStorage.getItem('token'); 
 
     useEffect(() => {
         if (!token) {
@@ -35,10 +35,7 @@ const Booking = () => {
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/user/profile", {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setUserData(response.data);
+                const response = await axios.get(`http://localhost:5000/user/profile?token=${token}`);
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
                 navigate("/login");
@@ -50,7 +47,7 @@ const Booking = () => {
     useEffect(() => {
         if (selectedDate) {
             axios.get(`http://localhost:5000/Booking/${token}`, {
-                params: { day: selectedDate + "T00:00:00.000Z", roomId: id }
+                params: { day: selectedDate, roomId: id }
             })
                 .then(response => {
                     const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];

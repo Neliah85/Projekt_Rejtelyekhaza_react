@@ -22,31 +22,33 @@ const Login = () => {
             console.log("Felhasználónév:", username);
             console.log("Jelszó:", password);
             console.log("Salt:", salt);
-            
-            let passwordWithSalt = password + salt; 
 
-        
+            let passwordWithSalt = password + salt;
             let hash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
-                       
+
             console.log("Hash:", hash);
+
             const loginResponse = await axios.post("http://localhost:5000/Login", {
                 LoginName: username,
-                TmpHash: hash,                
+                TmpHash: hash,
             });
-            
-          
 
-            localStorage.setItem("token", loginResponse.data.token);
-            localStorage.setItem("username", username);
+            if (loginResponse.status === 200) {
+                const data = loginResponse.data;
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("username", username);
+                localStorage.setItem("loggedIn", true);
 
+                setError("");
+                setSuccessMessage("Sikeres bejelentkezés!");
 
-            setError("");
-            setSuccessMessage("Sikeres bejelentkezés!");
-
-            setTimeout(() => {
-                setSuccessMessage("");
-                navigate("/");
-            }, 2000);
+                setTimeout(() => {
+                    setSuccessMessage("");
+                    navigate("/");
+                }, 2000);
+            } else {
+                setError("Hiba történt a bejelentkezéskor!");
+            }
         } catch (error) {
             console.error("Hiba a bejelentkezés során:", error);
             setError("Hiba történt a bejelentkezés során.");

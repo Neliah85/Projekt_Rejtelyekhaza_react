@@ -1,54 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
-import axios from "axios"; // Importálás
 
 const Header = () => {
     const navigate = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isCollege, setIsCollege] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (token) {
-            setIsLoggedIn(true);
-            axios
-                .get("/api/user", { 
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-                .then((response) => {
-                    setUser(response.data);
-                    if (response.data.roleId === 1) {
-                        setIsAdmin(true);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching user data:", error);
-                    setIsLoggedIn(false);
-                    localStorage.removeItem("token");
-                });
-        }
-    }, []);
-
-    const handleLogout = async () => {
-        const token = localStorage.getItem("token");
-    
-        try {
-            await axios.post(`http://localhost:5000/Logout/${token}`);
-    
-            localStorage.removeItem("token");
-            setIsLoggedIn(false);
-            setIsAdmin(false);
-            setUser(null);
-            navigate("/");
-        } catch (error) {
-            console.error("Hiba a kijelentkezés során:", error);
-            
-        }
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setIsAdmin(false);
+        setIsCollege(false);
+        navigate("/");
     };
 
     return (
@@ -69,13 +33,14 @@ const Header = () => {
                     <li><Link to="/privacy" className="menu-button">Adatvédelmi szabályzat</Link></li>
                     {isLoggedIn && <li><Link to="/profile" className="menu-button">Profil</Link></li>}
                     {isAdmin && <li><Link to="/admin" className="menu-button">Admin</Link></li>}
+                    {isCollege && <li><Link to="/college" className="menu-button">Főoldal</Link></li>}
                 </ul>
             </nav>
 
             <div className="auth-buttons">
                 {isLoggedIn ? (
                     <>
-                        {user && <Link to="/profile" className="profile-link">Üdv, {user.nickName}!</Link>}
+                        <Link to="/profile" className="profile-link">Profil</Link>
                         <button onClick={handleLogout} className="logout-button">Kijelentkezés</button>
                     </>
                 ) : (
