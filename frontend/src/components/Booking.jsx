@@ -22,37 +22,39 @@ const Booking = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState("");
-    const [userData, setUserData] = useState({ userName: "", email: "", phone: "" });
+    const [userData, setUserData] = useState({ realName: "", email: "", phone: "" });
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
-        const userToken = localStorage.getItem("token");
-
-        if (!userToken) {
+        if (!token) {
             navigate("/login");
             return;
         }
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/Users/${userToken}`);
+                const response = await axios.get("http://localhost:5000/user/profile", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 setUserData(response.data);
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
+                navigate("/login");
             }
         };
         fetchUserData();
-    }, [navigate]);
+    }, [navigate, token]);
 
     useEffect(() => {
         if (selectedDate) {
-            axios.get("http://localhost:5000/api/available-times", {
-                params: { trackId: id, date: selectedDate }
+            axios.get(`http://localhost:5000/Booking/${token}`, {
+                params: { day: selectedDate + "T00:00:00.000Z", roomId: id }
             })
                 .then(response => {
-                    const bookedTimes = response.data.bookedTimes || [];
                     const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
+                    const bookedTimes = response.data.map(booking => booking.time);
                     const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
                     setAvailableTimes(freeTimes);
                     setSelectedTime("");
@@ -62,7 +64,7 @@ const Booking = () => {
                     setAvailableTimes([]);
                 });
         }
-    }, [selectedDate, id]);
+    }, [selectedDate, id, token]);
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -70,22 +72,19 @@ const Booking = () => {
             alert("Válassz egy szabad idősávot!");
             return;
         }
-        const token = localStorage.getItem("token");
         const bookingData = {
-            trackId: id,
-            date: selectedDate,
-            time: selectedTime,
+            roomId: parseInt(id),
+            bookingDate: selectedDate + "T" + selectedTime + ":00.000Z",
             teamId: userData.teamId || null,
-            teamName: teamName || null,
+            comment: teamName || null,
         };
         try {
-            const response = await axios.post(`http://localhost:5000/Booking/${token}`, bookingData, {
-                headers: { "Content-Type": "application/json" }
-            });
+            const response = await axios.post(`http://localhost:5000/Booking/${token}`, bookingData);
             alert(response.data.message);
+            navigate("/bookings");
         } catch (error) {
             console.error("Hiba a foglalás során:", error);
-            alert("Hiba történt a foglalás során.");
+            alert(error.response.data);
         }
     };
 
@@ -136,7 +135,7 @@ const Booking = () => {
                         )}
 
                         <label>Név:</label>
-                        <input type="text" value={userData.userName} readOnly />
+                        <input type="text" value={userData.realName} readOnly />
 
                         <label>Email:</label>
                         <input type="email" value={userData.email} readOnly />

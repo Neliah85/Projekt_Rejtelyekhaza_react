@@ -65,19 +65,21 @@ const Register = () => {
         if (isValid) {
             try {
                 const salt = uuidv4();
-                
+
+                let hash = CryptoJS.SHA256(password + salt).toString(CryptoJS.enc.Hex);
+                let finalHash = CryptoJS.SHA256(hash).toString(CryptoJS.enc.Hex);
 
                 const response = await axios.post("http://localhost:5000/Registry", {
                     RealName: realName,
                     NickName: nickName,
                     Email: email,
                     Phone: phone,
-                    Hash: password+salt, 
+                    Hash: finalHash, 
                     Salt: salt
                 });
 
-               
-
+                
+            
                 setSuccessMessage(response.data.message);
                 setError("");
                 setFormSubmitted(true);

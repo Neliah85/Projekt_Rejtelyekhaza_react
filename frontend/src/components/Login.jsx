@@ -19,22 +19,26 @@ const Login = () => {
             const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${username}`);
             const salt = saltResponse.data;
 
+            console.log("Felhasználónév:", username);
+            console.log("Jelszó:", password);
+            console.log("Salt:", salt);
+            
             let passwordWithSalt = password + salt; 
 
         
             let hash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
-            const finalHash = CryptoJS.SHA256(hash).toString(CryptoJS.enc.Hex);
-
+                       
+            console.log("Hash:", hash);
             const loginResponse = await axios.post("http://localhost:5000/Login", {
                 LoginName: username,
-                TmpHash: finalHash,
+                TmpHash: hash,                
             });
-           
-
+            
+          
 
             localStorage.setItem("token", loginResponse.data.token);
             localStorage.setItem("username", username);
-            
+
 
             setError("");
             setSuccessMessage("Sikeres bejelentkezés!");
