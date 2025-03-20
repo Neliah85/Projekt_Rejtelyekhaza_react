@@ -19,9 +19,9 @@ const Login = () => {
             const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${username}`);
             const salt = saltResponse.data;
 
-            let passwordWithSalt = password + salt; // VAGY salt + password;
+            let passwordWithSalt = password + salt; 
 
-            // Dupla hash-elés a frontend oldalon
+        
             let hash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
             const finalHash = CryptoJS.SHA256(hash).toString(CryptoJS.enc.Hex);
 
