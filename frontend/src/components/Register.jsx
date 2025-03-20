@@ -65,17 +65,14 @@ const Register = () => {
         if (isValid) {
             try {
                 const salt = uuidv4();
-                const passwordWithSalt = password + salt; // VAGY salt + password;
-
-                // Hash-elés a frontend oldalon
-                const hash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
+                
 
                 const response = await axios.post("http://localhost:5000/Registry", {
                     RealName: realName,
                     NickName: nickName,
                     Email: email,
                     Phone: phone,
-                    Hash: hash, // A hash-elt jelszó + salt
+                    Hash: password+salt, 
                     Salt: salt
                 });
 
