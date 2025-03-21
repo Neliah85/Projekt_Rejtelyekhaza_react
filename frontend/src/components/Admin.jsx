@@ -28,6 +28,7 @@ const Admin = () => {
     const [minutes, setMinutes] = useState('00');
     const [seconds, setSeconds] = useState('00');
     
+    
 
     const handleCompetitionRoomChange = (event) => {
         setSelectedRoomIdForCompetition(event.target.value);
@@ -99,30 +100,30 @@ const Admin = () => {
             setError("Nem sikerült törölni a foglalást.");
         }
         };
-
+//*itt meg kell oldani, hogy az időpontok kiválaszthatóak legyenek, mert am nem tudja beküldeni a foglaltat
         const toggleMaintenance = async () => {
             const token = localStorage.getItem("token");
             if (!selectedRoomIdForMaintenance || !selectedDate) {
-              setError("Válassz egy szobát és egy dátumot!");
-              return;
+                setError("Válassz egy szobát és egy dátumot!");
+                return;
             }
             try {
-              const formattedDate = `${selectedDate}T`; 
-              for (const time of allTimes) {
-                const dateTime = `${formattedDate}${time}:00.000Z`; 
-                await axios.post(`http://localhost:5000/Booking/${token}`, {
-                  bookingDate: dateTime,
-                  roomId: selectedRoomIdForMaintenance,
-                  teamId: 1, 
-                  comment: "Karbantartás",
-                });
-              }
-              setMaintenanceStatus(!maintenanceStatus);
+                const formattedDate = `${selectedDate}T`;
+                for (const time of allTimes) {
+                    const dateTime = new Date(`${formattedDate}${time}:00.000Z`); // DateTime objektum létrehozása
+                    await axios.post(`http://localhost:5000/Booking/${token}`, {
+                        bookingDate: dateTime,
+                        roomId: selectedRoomIdForMaintenance,
+                        teamId: 1,
+                        comment: "Karbantartás",
+                    });
+                }
+                setMaintenanceStatus(!maintenanceStatus);
             } catch (error) {
-              setError("Nem sikerült módosítani a karbantartási állapotot.");
-              console.error("Karbantartási hiba:", error); 
+                setError("Nem sikerült módosítani a karbantartási állapotot.");
+                console.error("Karbantartási hiba:", error);
             }
-          };       
+        };
 
          
           const handleSaveCompetition = async () => {
