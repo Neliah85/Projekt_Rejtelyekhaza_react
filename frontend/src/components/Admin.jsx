@@ -1,82 +1,160 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import allTimes from './Booking.jsx';
+
+
 
 const Admin = () => {
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Kezdetben false
-    const [tracks, setTracks] = useState([]);
-    const [selectedTrack, setSelectedTrack] = useState("");
+    const [rooms] = useState([]);
+    const [selectedRoomId, setSelectedRoomId] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
-    const [bookings, setBookings] = useState([]);
+    const [selectedDate1, setSelectedDate1] = useState("");
+    const [bookingsList, setBookingsList] = useState([]);
     const [users, setUsers] = useState([]);
-    const [selectedMaintenanceTrack, setSelectedMaintenanceTrack] = useState("");
-    const [maintenanceMode, setMaintenanceMode] = useState({});
+    const [selectedRoomIdForMaintenance, setSelectedRoomIdForMaintenance] = useState("");
+    const [maintenanceStatus, setMaintenanceStatus] = useState(false);
     const [error, setError] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [selectedRoomIdForCompetition, setSelectedRoomIdForCompetition] = useState("");
+    const [bookingDate, setBookingDate] = useState("");
+    const [isAvailable, setIsAvailable] = useState(false);
+    const [competitionMessage, setCompetitionMessage] = useState("");
+    const [hours, setHours] = useState('00');
+    const [minutes, setMinutes] = useState('00');
+    const [seconds, setSeconds] = useState('00');
+    
+
+    const handleCompetitionRoomChange = (event) => {
+        setSelectedRoomIdForCompetition(event.target.value);
+        setCompetitionMessage("");
+    };
+
+    const handleHoursChange = (event) => {
+        setHours(event.target.value);
+    };
+
+    const handleMinutesChange = (event) => {
+        setMinutes(event.target.value);
+    };
+
+    const handleSecondsChange = (event) => {
+        setSeconds(event.target.value);
+    };
+
+
+    const loadInitialData = useCallback(async () => {
+        const token = localStorage.getItem("token");
+        await Promise.all([getUsers(token)]);
+    }, []);
 
     useEffect(() => {
-        const adminToken = localStorage.getItem("adminToken");
-        if (!adminToken) {
+        const token = localStorage.getItem("token");
+        if (!token) {
             navigate("/login");
-        } else {
-            setIsAuthenticated(true);
-            fetchTracks();
-            fetchUsers();
-        }
-    }, [navigate]);
-
-    const fetchTracks = async () => {
-        try {
-            const response = await axios.get("http://localhost:5000/tracks");
-            setTracks(response.data);
-        } catch (error) {
-            setError("Nem sikerült betölteni a pályákat.");
-        }
-    };
-
-    const fetchUsers = async () => {
-        try {
-            const response = await axios.get("http://localhost:5000/users");
-            setUsers(response.data);
-        } catch (error) {
-            setError("Nem sikerült betölteni a felhasználókat.");
-        }
-    };
-
-    const fetchBookings = async () => {
-        if (!selectedTrack || !selectedDate) {
-            setError("Válassz ki egy pályát és egy dátumot!");
+            setIsLoggedIn(false);
             return;
         }
-        try {
-            const response = await axios.get(
-                `http://localhost:5001/bookings?track=${selectedTrack}&date=${selectedDate}`
-            );
-            setBookings(response.data);
-        } catch (error) {
-            setError("Nem sikerült lekérdezni a foglalásokat.");
-        }
-    };
+        setIsLoggedIn(true);
+        loadInitialData();
+    }, [navigate, loadInitialData]);
 
-    const deleteBooking = async (bookingId) => {
+    
+      const getUsers = async () => {
+        const token = localStorage.getItem("token");
         try {
-            await axios.delete(`http://localhost:5001/bookings/${bookingId}`);
-            setBookings(bookings.filter((booking) => booking.id !== bookingId));
-        } catch (error) {
+          const response = await axios.get(`http://localhost:5000/Users/${token}`);
+          setUsers(response.data);
+        } catch {
+          setError("Nem sikerült betölteni a felhasználókat.");
+        }
+      };
+
+    const loadBookings = async () => {
+        const token = localStorage.getItem("token");
+        if (!selectedRoomId || !selectedDate) {
+          setError("Válassz ki egy szobát és egy dátumot!");
+          return;
+        }
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/Booking/${token}?room=${selectedRoomId}&date=${selectedDate}`
+          );
+          setBookingsList(response.data);
+        } catch {
+          setError("Nem sikerült lekérdezni a foglalásokat.");
+        }
+      };
+
+            const deleteBooking = async (bookingId) => {
+        const token = localStorage.getItem("token");
+        try {
+            await axios.delete(`http://localhost:5000/Booking/${bookingId}/${token}`);
+            setBookingsList(bookingsList.filter((booking) => booking.BookingId !== bookingId));
+        } catch {
             setError("Nem sikerült törölni a foglalást.");
         }
-    };
+        };
 
-    const toggleMaintenance = () => {
-        setMaintenanceMode((prev) => ({
-            ...prev,
-            [selectedMaintenanceTrack]: !prev[selectedMaintenanceTrack],
-        }));
-    };
+        const toggleMaintenance = async () => {
+            const token = localStorage.getItem("token");
+            if (!selectedRoomIdForMaintenance || !selectedDate) {
+              setError("Válassz egy szobát és egy dátumot!");
+              return;
+            }
+            try {
+              const formattedDate = `${selectedDate}T`; 
+              for (const time of allTimes) {
+                const dateTime = `${formattedDate}${time}:00.000Z`; 
+                await axios.post(`http://localhost:5000/Booking/${token}`, {
+                  bookingDate: dateTime,
+                  roomId: selectedRoomIdForMaintenance,
+                  teamId: 1, 
+                  comment: "Karbantartás",
+                });
+              }
+              setMaintenanceStatus(!maintenanceStatus);
+            } catch (error) {
+              setError("Nem sikerült módosítani a karbantartási állapotot.");
+              console.error("Karbantartási hiba:", error); 
+            }
+          };       
 
-    return isAuthenticated ? (
+         
+          const handleSaveCompetition = async () => {
+            const token = localStorage.getItem("token");
+            const resultTime = `${hours}:${minutes}:${seconds}`;
+    
+            try {
+                const response = await axios.put(
+                    `http://localhost:5000/Booking/SaveResult/${token}`,
+                    {}, 
+                    {
+                        params: {
+                            bookingDate: bookingDate,
+                            roomId: selectedRoomIdForCompetition,
+                            result: resultTime,
+                        },
+                    }
+                );
+    
+                if (response.status === 200) {
+                    setCompetitionMessage("Versenyadatok sikeresen mentve!");
+                } else {
+                    setCompetitionMessage("Hiba a versenyadatok mentésekor.");
+                }
+            } catch (error) {
+                setCompetitionMessage("Hiba a versenyadatok mentésekor: " + error.message);
+                console.error(error);
+            }
+        };
+
+
+    return isLoggedIn ? (
         <>
             <Header />
             <main className="admin-container">
@@ -89,15 +167,20 @@ const Admin = () => {
                         <h2>Foglalások kezelése</h2>
                         <label>Pálya:</label>
                         <select
-                            value={selectedTrack}
-                            onChange={(e) => setSelectedTrack(e.target.value)}
+                            value={selectedRoomId}
+                            onChange={(e) => setSelectedRoomId(e.target.value)}
                         >
-                            <option value="">Válassz egy pályát</option>
-                            {tracks.map((track) => (
-                                <option key={track.id} value={track.id}>
-                                    {track.name}
-                                </option>
-                            ))}
+                            <option value="">Válassz egy szobát</option>
+                            <option value="1">Menekülés az iskolából</option>
+                            <option value="2">A pedellus bosszúja</option>
+                            <option value="3">A tanári titkai</option>
+                            <option value="4">A takarítónő visszanéz</option>
+                            <option value="5">Szabadulás Kódja</option>
+                            <option value="6">Időcsapda</option>
+                            <option value="7">KódX Szoba</option>
+                            <option value="8">Kalandok Kamrája</option>
+                            <option value="9">Titkok Labirintusa</option>                             
+                            
                         </select>
                         <label>Dátum:</label>
                         <input
@@ -105,93 +188,153 @@ const Admin = () => {
                             value={selectedDate}
                             onChange={(e) => setSelectedDate(e.target.value)}
                         />
-                        <button onClick={fetchBookings}>Foglalások lekérése</button>
-                        {bookings.map((booking) => (
-                            <div key={booking.id}>
-                                {booking.time} - {booking.name}
-                                <button onClick={() => deleteBooking(booking.id)}>
+                        <button onClick={loadBookings}>Foglalások lekérése</button>
+                        {bookingsList.map((booking) => (
+                            <div key={booking.BookingId}>
+                                {booking.BookingDate} - {booking.Team?.Id - booking.comment}
+                                <button onClick={() => deleteBooking(booking.BookingId)}>
                                     Törlés
                                 </button>
                             </div>
                         ))}
                     </section>
+
                     {/* 2. Pályák karbantartása */}
                     <section className="admin-section">
-                        <h2>Pályák karbantartása</h2>
-                        <label>Válassz egy pályát:</label>
+                        <h2>Szobák karbantartása</h2>
+                        <label>Válassz egy szobát:</label>
                         <select
-                            value={selectedMaintenanceTrack}
-                            onChange={(e) =>
-                                setSelectedMaintenanceTrack(e.target.value)
-                            }
-                        >
-                            <option value="">Válassz egy pályát</option>
-                            {tracks.map((track) => (
-                                <option key={track.id} value={track.id}>
-                                    {track.name}
+                            onChange={(e) => setSelectedRoomIdForMaintenance(e.target.value)}
+                            >
+                                <option value="">Válassz egy szobát</option>
+                                <option value="1">Menekülés az iskolából</option>
+                                <option value="2">A pedellus bosszúja</option>
+                                <option value="3">A tanári titkai</option>
+                                <option value="4">A takarítónő visszanéz</option>
+                                <option value="5">Szabadulás Kódja</option>
+                                <option value="6">Időcsapda</option>
+                                <option value="7">KódX Szoba</option>
+                                <option value="8">Kalandok Kamrája</option>
+                                <option value="9">Titkok Labirintusa</option>        
+                            <option value="">Válassz egy szobát</option>
+                            {rooms.map((room) => (
+                                <option key={room.RoomId} value={room.RoomId}>
+                                    {room.Name}
                                 </option>
                             ))}
                         </select>
+                        <label>Dátum:</label>
+                        <input
+                            type="date"
+                            value={selectedDate1}
+                            onChange={(e) => setSelectedDate1(e.target.value)}
+                        />
                         <button onClick={toggleMaintenance}>
-                            {maintenanceMode[selectedMaintenanceTrack]
-                                ? "Karbantartás kikapcsolása"
-                                : "Karbantartás bekapcsolása"}
+                            {maintenanceStatus ? "Karbantartás kikapcsolása" : "Karbantartás bekapcsolása"}
                         </button>
                     </section>
 
-                    {/* 2. Felhasználók kezelése */}
+                    {/* 3. Felhasználók kezelése */}
                     <section className="admin-section">
                         <h2>Felhasználók kezelése</h2>
+                        
                         <table className="user-table">
                             <thead>
-                                <tr>
-                                    <th>Név</th>
-                                    <th>Email</th>
-                                    <th>Telefon</th>
-                                    <th>Műveletek</th>
-                                </tr>
+                            <tr>
+                                <th>Név</th>
+                                <th>Email</th>
+                                <th>Telefon</th>
+                                <th>Jogosultság</th>
+                                <th>Csapat ID</th>
+                                <th>Műveletek</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {users.map((user) => (
-                                    <tr key={user.id}>
-                                        <td>{user.name}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.phone}</td>
-                                        <td>
-                                            <button>Törlés</button>
-                                            <button>Módosítás</button>
-                                        </td>
-                                    </tr>
-                                ))}
+                            {users.map((user) => (
+                                <tr key={user.UserId}>
+                                <td>{user.realName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.phone}</td>
+                                <td>{user.roleId}</td>
+                                <td>{user.teamId}</td>
+                                
+                                <td>
+                                    <div>
+                                    <div className="icon-button edit" onClick={onclick}>
+                                        <FaEdit />
+                                    </div>
+                                    <div className="icon-button delete" onClick={onclick}>
+                                        <FaTrash />
+                                    </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
-                    </section>
+                        <button onClick={getUsers}>Felhasználók betöltése</button>
+                        </section>
 
                     {/* 4. Versenytábla kezelése */}
-                    <section className="admin-section">
-                        <h2>Versenytábla kezelése</h2>
-                        <label>Pálya:</label>
-                        <select
-                            value={selectedTrack}
-                            onChange={(e) => setSelectedTrack(e.target.value)}
-                        >
-                            <option value="">Válassz egy pályát</option>
-                            {tracks.map((track) => (
-                                <option key={track.id} value={track.id}>
-                                    {track.name}
+                   <section className="admin-section">
+                <h2>Versenytábla kezelése</h2>
+                <label>Szoba:</label>
+                <select
+                    value={selectedRoomIdForCompetition}
+                    onChange={handleCompetitionRoomChange}
+                >
+                            
+                            <option value="">Válassz egy szobát</option>
+                                <option value="1">Menekülés az iskolából</option>
+                                <option value="2">A pedellus bosszúja</option>
+                                <option value="3">A tanári titkai</option>
+                                <option value="4">A takarítónő visszanéz</option>
+                                <option value="5">Szabadulás Kódja</option>
+                                <option value="6">Időcsapda</option>
+                                <option value="7">KódX Szoba</option>
+                                <option value="8">Kalandok Kamrája</option>
+                                <option value="9">Titkok Labirintusa</option>
+                            {rooms.map((room) => (
+                                <option key={room.RoomId} value={room.RoomId}>
+                                    {room.Name}
                                 </option>
                             ))}
-                        </select>
-                        <label>Csapatnév:</label>
-                        <input type="text" />
-                        <label>Foglalt időpont:</label>
-                        <input type="datetime" />
-                        <label>Eredmény</label>
-                        <input type="time" />
-                        <label>Kijutottak?</label>
-                        <input type="checkbox" />
-                        <button>Hozzáadás</button>
-                    </section>
+                       </select>
+                            <label>Foglalt időpont:</label>
+                            <input type="datetime-local" value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} />
+
+                            <label>Eredmény:</label>
+                            <input
+                                type="number"
+                                value={hours}
+                                onChange={handleHoursChange}
+                                min="0"
+                                max="23"
+                            />
+                            :
+                            <input
+                                type="number"
+                                value={minutes}
+                                onChange={handleMinutesChange}
+                                min="0"
+                                max="59"
+                            />
+                            :
+                            <input
+                                type="number"
+                                value={seconds}
+                                onChange={handleSecondsChange}
+                                min="0"
+                                max="59"
+                            />
+
+                            <label>Kijutottak?</label>
+                            <input type="checkbox" checked={isAvailable} onChange={(e) => setIsAvailable(e.target.checked)} />
+
+                            <button onClick={handleSaveCompetition}>Hozzáadás</button>
+
+                            {competitionMessage && <p>{competitionMessage}</p>}
+                            </section>
                 </div>
             </main>
             <Footer />

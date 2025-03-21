@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 
 const Header = () => {
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [isCollege, setIsCollege] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const storedUsername = localStorage.getItem('username');
+        if (token) {
+            setIsLoggedIn(true);
+            setUsername(storedUsername);
+        } else {
+            setIsLoggedIn(false);
+            setUsername("");
+        }
+    }, []);
 
     const handleLogout = () => {
-        setIsLoggedIn(false);
-        setIsAdmin(false);
-        setIsCollege(false);
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('loggedIn');
+        setIsLoggedIn(false);        
+        setUsername("");
         navigate("/");
     };
 
@@ -32,15 +45,15 @@ const Header = () => {
                     <li><Link to="/gallery" className="menu-button">Galéria</Link></li>
                     <li><Link to="/privacy" className="menu-button">Adatvédelmi szabályzat</Link></li>
                     {isLoggedIn && <li><Link to="/profile" className="menu-button">Profil</Link></li>}
-                    {isAdmin && <li><Link to="/admin" className="menu-button">Admin</Link></li>}
-                    {isCollege && <li><Link to="/college" className="menu-button">Főoldal</Link></li>}
+                    {isLoggedIn && <li><Link to="/admin" className="menu-button">Admin</Link></li>}
+                   
                 </ul>
             </nav>
 
             <div className="auth-buttons">
                 {isLoggedIn ? (
                     <>
-                        <Link to="/profile" className="profile-link">Profil</Link>
+                        <span>Üdv, </span><Link to="/profile" className="profile-link">{username}</Link><span>!</span>
                         <button onClick={handleLogout} className="logout-button">Kijelentkezés</button>
                     </>
                 ) : (

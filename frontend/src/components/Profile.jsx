@@ -23,21 +23,25 @@ const Profile = () => {
             return;
         }
 
-        const fetchUserData = async () => {
+        const getUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/Users/${token}`); // Módosított végpont
-                setUserData({
-                    realName: response.data.realName,
-                    nickName: response.data.nickName,
-                    email: response.data.email,
-                    phone: response.data.phone,
-                    teamId: response.data.teamId,
-                });
+                const response = await axios.get(`http://localhost:5000/Users/${token}`); // Token beépítése a URL-be
+                
+                if (response.data) {
+                    setUserData({
+                        realName: response.data.realName,
+                        nickName: response.data.nickName,
+                        email: response.data.email,
+                        phone: response.data.phone,
+                        teamId: response.data.teamId,
+                    });
+                }
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
+                navigate("/login");
             }
         };
-        fetchUserData();
+        getUserData();
     }, [navigate]);
 
     const handleSave = async (e) => {
@@ -48,11 +52,11 @@ const Profile = () => {
                 ...userData,
                 password: password || undefined,
             };
-            await axios.post(`http://localhost:5000/Users/${token}`, updatedData); // Módosított végpont és HTTP metódus
+
+            await axios.post(`http://localhost:5000/Users/${token}`, updatedData); // Token a URL-ben
             alert("Profil sikeresen frissítve!");
         } catch (error) {
             console.error("Hiba a profil frissítésekor:", error);
-            alert("Hiba történt a profil frissítése során.");
         }
     };
 
@@ -60,48 +64,24 @@ const Profile = () => {
         <>
             <Header />
             <main className="profile-container">
-                <h1>Profil</h1>
+                <h2>Profil</h2>
                 <form onSubmit={handleSave}>
-                    <label>Felhasználónév:</label>
-                    <input type="text" value={userData.nickName} readOnly />
+                    <label>Valódi név:</label>
+                    <input type="text" value={userData.realName} onChange={(e) => setUserData({ ...userData, realName: e.target.value })} />
 
-                    <label>Név:</label>
-                    <input
-                        type="text"
-                        value={userData.realName}
-                        onChange={(e) => setUserData({ ...userData, realName: e.target.value })}
-                    />
+                    <label>Felhasználónév:</label>
+                    <input type="text" value={userData.nickName} disabled />
 
                     <label>Email:</label>
-                    <input
-                        type="email"
-                        value={userData.email}
-                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-                    />
+                    <input type="email" value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
 
-                    <label>Telefonszám:</label>
-                    <input
-                        type="text"
-                        value={userData.phone}
-                        onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
-                    />
+                    <label>Telefon:</label>
+                    <input type="text" value={userData.phone} onChange={(e) => setUserData({ ...userData, phone: e.target.value })} />
 
-                    <label>Csapat ID:</label>
-                    <input
-                        type="text"
-                        value={userData.teamId || ""}
-                        onChange={(e) => setUserData({ ...userData, teamId: e.target.value })}
-                    />
+                    <label>Új jelszó (opcionális):</label>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                    <label>Új jelszó:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Ha nem akarod módosítani, hagyd üresen"
-                    />
-
-                    <button type="submit" className="profile-container button">Mentés</button>
+                    <button type="submit">Mentés</button>
                 </form>
             </main>
             <Footer />

@@ -58,7 +58,7 @@ main {
     text-decoration: none;
     color: white;
     font-weight: bold;
-    font-size: 14px; /* Kisebb betűméret */
+    font-size: 13px; /* Kisebb betűméret */
     transition: color 0.3s;
 }
 
@@ -1199,9 +1199,10 @@ p {
 /* ---- Admin rács elrendezése ---- */
 .admin-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
-    margin-top: 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    justify-content: center;
 }
 
 /* ---- Admin szekciók (dobozok) ---- */
@@ -1226,7 +1227,7 @@ p {
 .admin-section input[type="email"],
 .admin-section input[type="tel"],
 .admin-section input[type="date"] {
-    width: 100%;
+    width: 80%;
     padding: 10px;
     border: 2px solid #f7d765;
     border-radius: 5px;
@@ -1266,6 +1267,7 @@ p {
     border: 2px solid #f7d765;
     padding: 10px;
     text-align: center;
+    font-size: 14px;
 }
 
 .user-table th {
@@ -1386,6 +1388,7 @@ p {
     border: 2px solid #f7d765;
     padding: 10px;
     text-align: center;
+    
 }
 
 .challenge-table th {
@@ -1419,3 +1422,16 @@ p {
     .privacy-policy-container li {
         margin-bottom: 10px;
     }
+
+    .icon-button {
+        font-size: 1em;
+        cursor: pointer;
+      }
+      
+      .icon-button.edit {
+        color: blue;
+      }
+      
+      .icon-button.delete {
+        color: red;
+      }

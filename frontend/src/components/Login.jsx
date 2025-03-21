@@ -16,28 +16,30 @@ const Login = () => {
         e.preventDefault();
 
         try {
+            // Salt lekérése
             const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${username}`);
             const salt = saltResponse.data;
 
-            console.log("Felhasználónév:", username);
-            console.log("Jelszó:", password);
-            console.log("Salt:", salt);
-
+            // Hash generálás
             let passwordWithSalt = password + salt;
             let hash = CryptoJS.SHA256(passwordWithSalt).toString(CryptoJS.enc.Hex);
 
-            console.log("Hash:", hash);
-
+            // Bejelentkezés
             const loginResponse = await axios.post("http://localhost:5000/Login", {
                 LoginName: username,
                 TmpHash: hash,
             });
 
             if (loginResponse.status === 200) {
-                const data = loginResponse.data;
-                localStorage.setItem("token", data.token);
+                const token = loginResponse.data.token; 
+
+                // Token tárolása localStorage-ban
+                localStorage.setItem("token", token);
                 localStorage.setItem("username", username);
                 localStorage.setItem("loggedIn", true);
+                console.log("Token: ", token);
+                console.log("Username: ", username);
+
 
                 setError("");
                 setSuccessMessage("Sikeres bejelentkezés!");

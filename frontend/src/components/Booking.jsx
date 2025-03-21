@@ -22,10 +22,10 @@ const Booking = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState("");
-    const [userData, setUserData] = useState({ realName: "", email: "", phone: "" });
+    const [userData, setUserData] = useState({ realName: "", email: "", phone: "", teamId: null });
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         if (!token) {
@@ -33,15 +33,21 @@ const Booking = () => {
             return;
         }
 
-        const fetchUserData = async () => {
+        const getUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/user/profile?token=${token}`);
+                const response = await axios.get(`http://localhost:5000/Users/${token}`);
+                setUserData({
+                    realName: response.data.realName,
+                    email: response.data.email,
+                    phone: response.data.phone,
+                    teamId: response.data.teamId
+                });
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
                 navigate("/login");
             }
         };
-        fetchUserData();
+        getUserData();
     }, [navigate, token]);
 
     useEffect(() => {
@@ -73,7 +79,7 @@ const Booking = () => {
             roomId: parseInt(id),
             bookingDate: selectedDate + "T" + selectedTime + ":00.000Z",
             teamId: userData.teamId || null,
-            comment: teamName || null,
+            comment: teamName || null
         };
         try {
             const response = await axios.post(`http://localhost:5000/Booking/${token}`, bookingData);
@@ -81,7 +87,7 @@ const Booking = () => {
             navigate("/bookings");
         } catch (error) {
             console.error("Hiba a foglalás során:", error);
-            alert(error.response.data);
+            alert(error.response?.data?.message || "Hiba történt a foglalás során.");
         }
     };
 
@@ -120,25 +126,7 @@ const Booking = () => {
                         </select>
 
                         <label>Csapatnév:</label>
-                        {userData.teamName ? (
-                            <input type="text" value={userData.teamName} disabled />
-                        ) : (
-                            <input
-                                type="text"
-                                value={teamName}
-                                onChange={(e) => setTeamName(e.target.value)}
-                                placeholder="Add meg a csapatnevet"
-                            />
-                        )}
-
-                        <label>Név:</label>
-                        <input type="text" value={userData.realName} readOnly />
-
-                        <label>Email:</label>
-                        <input type="email" value={userData.email} readOnly />
-
-                        <label>Telefon:</label>
-                        <input type="text" value={userData.phone} readOnly />
+                        <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
 
                         <button type="submit">Foglalás</button>
                     </form>

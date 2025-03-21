@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useNavigate } from 'react-router-dom';
 
 
 import room1 from "../assets/images/room1.jpg";
@@ -22,14 +23,26 @@ const slides = [
 
 
 const Home = () => {
+    const navigate = useNavigate();
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            // Itt már nem szükséges a backend hívás a token ellenőrzésére
+            // A token érvényességét a backend a védett útvonalakhoz való hozzáféréskor ellenőrzi
+            console.log("Token a localStorage-ból:", token);
+        } else {
+            console.log("Nincs token a localStorage-ban.");
+            // Ha nincs token, átirányíthatod a felhasználót a bejelentkezési oldalra
+            // navigate('/login');
+        }
+
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000); 
+        }, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [navigate]);
 
     const rooms = [
         { id: "room1", name: "Menekülés az iskolából", img: room1 },
