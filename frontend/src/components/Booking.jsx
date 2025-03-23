@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
+import allTimes from './Times.js';
 
 const tracks = {
     room1: "Menekülés az iskolából",
@@ -56,7 +57,7 @@ const Booking = () => {
                 params: { day: selectedDate, roomId: id }
             })
                 .then(response => {
-                    const allTimes = ["9:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
+                                     
                     const bookedTimes = response.data.map(booking => booking.time);
                     const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
                     setAvailableTimes(freeTimes);

@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import allTimes from './Booking.jsx';
+import allTimes from './Times.js';
 
 
 
@@ -17,7 +17,7 @@ const Admin = () => {
     const [bookingsList, setBookingsList] = useState([]);
     const [users, setUsers] = useState([]);
     const [selectedRoomIdForMaintenance, setSelectedRoomIdForMaintenance] = useState("");
-    const [maintenanceStatus, setMaintenanceStatus] = useState(false);
+    const [selectedTimes, setSelectedTimes] = useState([]);    
     const [error, setError] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [selectedRoomIdForCompetition, setSelectedRoomIdForCompetition] = useState("");
@@ -27,6 +27,7 @@ const Admin = () => {
     const [hours, setHours] = useState('00');
     const [minutes, setMinutes] = useState('00');
     const [seconds, setSeconds] = useState('00');
+    const [successMessage, setSuccessMessage] = useState("");
     
     
 
@@ -100,29 +101,43 @@ const Admin = () => {
             setError("Nem sikerült törölni a foglalást.");
         }
         };
-//*itt meg kell oldani, hogy az időpontok kiválaszthatóak legyenek, mert am nem tudja beküldeni a foglaltat
+
+        const handleTimeSelection = (time) => {
+            setSelectedTimes(prev =>
+                prev.includes(time)
+                    ? prev.filter(t => t !== time)
+                    : [...prev, time]
+            );
+        };
+    
         const toggleMaintenance = async () => {
+            console.log("selectedRoomIdForMaintenance:", selectedRoomIdForMaintenance);
+            console.log("selectedDate:", selectedDate1);
+            console.log("selectedTimes:", selectedTimes);
+            
             const token = localStorage.getItem("token");
-            if (!selectedRoomIdForMaintenance || !selectedDate) {
-                setError("Válassz egy szobát és egy dátumot!");
+            if (!selectedRoomIdForMaintenance || !selectedDate1 || selectedTimes.length === 0) {
+                setError("Válassz egy szobát, egy dátumot és legalább egy időpontot!");
                 return;
             }
-            try {
-                const formattedDate = `${selectedDate}T`;
-                for (const time of allTimes) {
-                    const dateTime = new Date(`${formattedDate}${time}:00.000Z`); // DateTime objektum létrehozása
+    
+            for (const time of selectedTimes) {            
+                try {
+                    const formattedTime = time;
+                    const formattedDateTime = `${selectedDate1}T${formattedTime}`;
                     await axios.post(`http://localhost:5000/Booking/${token}`, {
-                        bookingDate: dateTime,
+                        bookingDate: formattedDateTime,                       
                         roomId: selectedRoomIdForMaintenance,
-                        teamId: 1,
+                        teamId: "1",
                         comment: "Karbantartás",
                     });
+                } catch (error) {
+                    setError(`Nem sikerült beküldeni: ${time} - ${error.message}`);
+                    return;
                 }
-                setMaintenanceStatus(!maintenanceStatus);
-            } catch (error) {
-                setError("Nem sikerült módosítani a karbantartási állapotot.");
-                console.error("Karbantartási hiba:", error);
             }
+            setError("");
+            setSuccessMessage("A karbantartás sikeresen beállítva!");
         };
 
          
@@ -200,13 +215,10 @@ const Admin = () => {
                         ))}
                     </section>
 
-                    {/* 2. Pályák karbantartása */}
                     <section className="admin-section">
-                        <h2>Szobák karbantartása</h2>
-                        <label>Válassz egy szobát:</label>
-                        <select
-                            onChange={(e) => setSelectedRoomIdForMaintenance(e.target.value)}
-                            >
+                            <h2>Szobák karbantartása</h2>
+                            <label>Válassz egy szobát:</label>
+                            <select onChange={(e) => setSelectedRoomIdForMaintenance(e.target.value)}>
                                 <option value="">Válassz egy szobát</option>
                                 <option value="1">Menekülés az iskolából</option>
                                 <option value="2">A pedellus bosszúja</option>
@@ -216,24 +228,24 @@ const Admin = () => {
                                 <option value="6">Időcsapda</option>
                                 <option value="7">KódX Szoba</option>
                                 <option value="8">Kalandok Kamrája</option>
-                                <option value="9">Titkok Labirintusa</option>        
-                            <option value="">Válassz egy szobát</option>
-                            {rooms.map((room) => (
-                                <option key={room.RoomId} value={room.RoomId}>
-                                    {room.Name}
-                                </option>
-                            ))}
-                        </select>
-                        <label>Dátum:</label>
-                        <input
-                            type="date"
-                            value={selectedDate1}
-                            onChange={(e) => setSelectedDate1(e.target.value)}
-                        />
-                        <button onClick={toggleMaintenance}>
-                            {maintenanceStatus ? "Karbantartás kikapcsolása" : "Karbantartás bekapcsolása"}
-                        </button>
-                    </section>
+                                <option value="9">Titkok Labirintusa</option>
+                            </select>
+                            <label>Dátum:</label>
+                            <input type="date" value={selectedDate1} onChange={(e) => setSelectedDate1(e.target.value)} />
+                            <div>
+                                {allTimes.map(time => (
+                                    <label key={time}>
+                                        <input type="checkbox" value={time} onChange={() => handleTimeSelection(time)} />
+                                        {time}
+                                    </label>
+                                ))}
+                            </div>
+                            <button onClick={toggleMaintenance}>
+                                Karbantartás beállítása
+                            </button>
+                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+                        </section>
 
                     {/* 3. Felhasználók kezelése */}
                     <section className="admin-section">
