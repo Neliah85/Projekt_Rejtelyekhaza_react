@@ -29,6 +29,10 @@ const Booking = () => {
     const [teamName, setTeamName] = useState("");
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
+    const [bookingError, setBookingError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [teamRegistrationError, setTeamRegistrationError] = useState("");
+
 
     useEffect(() => {
         if (!token) {
@@ -54,7 +58,7 @@ const Booking = () => {
             }
         };
         getUserData();
-    }, [navigate, token]); // userName eltávolítva a függőségi tömbből
+    }, [navigate, token]); 
 
     useEffect(() => {
         if (selectedDate && roomId) {
@@ -77,6 +81,20 @@ const Booking = () => {
         }
     }, [selectedDate, roomId, token]);
 
+    const handleTeamRegistration = async () => { 
+        try {
+            const response = await axios.post(`http://localhost:5000/Teams/TeamRegistration/${token},${teamName}`);
+            if (response.status === 200) {
+                setTeamRegistrationError("Sikeres csapat regisztráció!");
+                console.log(response.data); // Sikeres regisztráció üzenet
+            } else {
+                setTeamRegistrationError("Ez a csapatnév már létezik.");
+            }
+        } catch (error) {
+            setTeamRegistrationError(`Hiba a csapatnév regisztráció során: ${error.message}`);
+        }
+    };
+
     const handleBooking = async (e) => {
         e.preventDefault();
         if (!selectedTime) {
@@ -96,15 +114,15 @@ const Booking = () => {
             const response = await axios.post(`http://localhost:5000/Booking/NewBooking/${token}`, bookingData);
         
             if (response.status === 200) {
-                alert("Sikeres foglalás!");
-                console.log(response.data); // Backend üzenetének megjelenítése
+                setBookingError("Sikeres fogkálás!"); 
+                console.log(response.data); 
             } else {
-                alert("Hiba a karbantartás beállításakor.");
-                alert(""); // Sikeres üzenet törlése, ha hiba van
+                setBookingError("Hiba a foglalás beküldésekor."); 
+                console.log(response.data);
             }
         } catch (error) {
-            alert(`Nem sikerült beküldeni: ${error.message}`);
-            alert(""); // Sikeres üzenet törlése, ha hiba van
+            setBookingError(`Nem sikerült beküldeni: ${error.message}`);
+            setSuccessMessage("");
         }
     };
 
@@ -167,10 +185,20 @@ const Booking = () => {
 
                         <p>Email cím: {userData.email}</p>
 
+                        <h4>Amennyiben még nem tartozol csapathoz, itt van lehetőséged egy új csapat létrehozására. Kérjük, válassz egy egyedi csapatnevet!</h4>
+
+                       
                         <label>Csapatnév:</label>
                         <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
+                        <h5>Fontos tudnod, hogy ha már egy meglévő csapat tagja vagy, és egy új csapatnevet regisztrálsz, azzal automatikusan kilépsz a jelenlegi csapatodból. Kérjük, ezt vedd figyelembe a csapatnév regisztrációja során!</h5>
+
+                        <button type="button" onClick={handleTeamRegistration}>Csapatnév regisztráció</button>
 
                         <button type="submit">Foglalás</button>
+
+                    {bookingError && <p style={{ color: "red" }}>{bookingError}</p>}
+                    {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+                    {teamRegistrationError && <p style={{ color: "red" }}>{teamRegistrationError}</p>} 
                     </form>
                 </section>
             </main>

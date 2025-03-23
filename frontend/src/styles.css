@@ -11,6 +11,19 @@ body {
        
 }
 
+h5{
+    text-align: center;
+    margin-top: 20px;
+    color: red;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h4{
+    text-align: center;
+    margin-top: 20px;
+    color: #920505;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 main {
     padding-top: 100px; /* A fejléc alá tolja az egész tartalmat */
 }
