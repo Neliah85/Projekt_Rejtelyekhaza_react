@@ -47,6 +47,7 @@ const Booking = () => {
                     teamId: response.data.teamId,
                     nickName: response.data.nickName,
                 });
+                
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
                 navigate("/login");
@@ -82,18 +83,28 @@ const Booking = () => {
             alert("Válassz egy szabad idősávot!");
             return;
         }
-        const bookingData = {
-            roomId: roomId,
-            bookingDate: selectedDate + "T" + selectedTime + ":00.000Z",
-            teamId: userData.teamId || null,
-        };
+
         try {
-            const response = await axios.post(`http://localhost:5000/Booking/NewBooking${token}`, bookingData);
-            alert(response.data);
-            navigate("/bookings");
+            const bookingData = {
+                bookingDate: selectedDate + "T" + selectedTime + ":00.000Z",
+                roomId: roomId,
+                teamId: userData.teamId || 0, // Ha nincs teamId, akkor 0
+                comment: "online foglalás",
+            };      
+
+
+            const response = await axios.post(`http://localhost:5000/Booking/NewBooking/${token}`, bookingData);
+        
+            if (response.status === 200) {
+                alert("Sikeres foglalás!");
+                console.log(response.data); // Backend üzenetének megjelenítése
+            } else {
+                alert("Hiba a karbantartás beállításakor.");
+                alert(""); // Sikeres üzenet törlése, ha hiba van
+            }
         } catch (error) {
-            console.error("Hiba a foglalás során:", error);
-            alert(error.response?.data || "Hiba történt a foglalás során.");
+            alert(`Nem sikerült beküldeni: ${error.message}`);
+            alert(""); // Sikeres üzenet törlése, ha hiba van
         }
     };
 
