@@ -126,7 +126,7 @@ const Admin = () => {
                     const formattedTime = time;
                     const formattedDateTime = `${selectedDate1}T${formattedTime}`;
                     await axios.post(`http://localhost:5000/Booking/${token}`, {
-                        bookingDate: formattedDateTime,                       
+                        bookingDate: formattedDateTime,
                         roomId: selectedRoomIdForMaintenance,
                         teamId: "1",
                         comment: "Karbantartás",
