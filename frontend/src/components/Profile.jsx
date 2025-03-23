@@ -11,6 +11,7 @@ const Profile = () => {
         email: "",
         phone: "",
         teamId: null,
+        userId: 0,
     });
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Profile = () => {
                     phone: response.data.phone,
                     teamId: response.data.teamId,
                     nickName: response.data.nickName,
+                    userId: response.data.userId,
                 });
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
@@ -51,7 +53,7 @@ const Profile = () => {
                 password: password || undefined,
             };
 
-            await axios.post(`http://localhost:5000/Users/${token}`, updatedData); // Token a URL-ben
+            await axios.put(`http://localhost:5000/Users/${token}`, updatedData); 
             alert("Profil sikeresen frissítve!");
         } catch (error) {
             console.error("Hiba a profil frissítésekor:", error);
