@@ -7,7 +7,7 @@ import CryptoJS from 'crypto-js';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [username, setUsername] = useState("");
+    const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -17,7 +17,7 @@ const Login = () => {
 
         try {
             // Salt lekérése
-            const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${username}`);
+            const saltResponse = await axios.post(`http://localhost:5000/Login/GetSalt/${userName}`);
             const salt = saltResponse.data;
 
             // Hash generálás
@@ -26,7 +26,7 @@ const Login = () => {
 
             // Bejelentkezés
             const loginResponse = await axios.post("http://localhost:5000/Login", {
-                LoginName: username,
+                LoginName: userName,
                 TmpHash: hash,
             });
 
@@ -35,10 +35,10 @@ const Login = () => {
 
                 // Token tárolása localStorage-ban
                 localStorage.setItem("token", token);
-                localStorage.setItem("username", username);
+                localStorage.setItem("username", userName);
                 localStorage.setItem("loggedIn", true);
                 console.log("Token: ", token);
-                console.log("Username: ", username);
+                console.log("Username: ", userName);
 
 
                 setError("");
@@ -67,7 +67,7 @@ const Login = () => {
 
                 <form onSubmit={handleLogin}>
                     <label>Felhasználónév:</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} required />
 
                     <label>Jelszó:</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />

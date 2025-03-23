@@ -14,10 +14,10 @@ const Profile = () => {
     });
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    const userName = localStorage.getItem("userName");
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
         if (!token) {
             navigate("/login");
             return;
@@ -25,24 +25,22 @@ const Profile = () => {
 
         const getUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/Users/${token}`); // Token beépítése a URL-be
-                
-                if (response.data) {
-                    setUserData({
-                        realName: response.data.realName,
-                        nickName: response.data.nickName,
-                        email: response.data.email,
-                        phone: response.data.phone,
-                        teamId: response.data.teamId,
-                    });
-                }
+                const userName = localStorage.getItem("username");
+                const response = await axios.get(`http://localhost:5000/Users/GetByUserName/${token},${userName}`);
+        setUserData({
+                    realName: response.data.realName,
+                    email: response.data.email,
+                    phone: response.data.phone,
+                    teamId: response.data.teamId,
+                    nickName: response.data.nickName,
+                });
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
                 navigate("/login");
             }
         };
         getUserData();
-    }, [navigate]);
+    }, [navigate, token, userName]);
 
     const handleSave = async (e) => {
         e.preventDefault();

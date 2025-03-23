@@ -6,20 +6,22 @@ import Footer from "./Footer";
 import allTimes from './Times.js';
 
 const tracks = {
-    room1: "Menekülés az iskolából",
-    room2: "A pedellus bosszúja",
-    room3: "A tanári titkai",
-    room4: "A takarítónő visszanéz",
-    room5: "Szabadulás Kódja",
-    room6: "Időcsapda",
-    room7: "KódX Szoba",
-    room8: "Kalandok Kamrája",
-    room9: "Titkok Labirintusa"
+    room1: { name: "Menekülés az iskolából", roomId: 1 },
+    room2: { name: "A pedellus bosszúja", roomId: 2 },
+    room3: { name: "A tanári titkai", roomId: 3 },
+    room4: { name: "A takarítónő visszanéz", roomId: 4 },
+    room5: { name: "Szabadulás Kódja", roomId: 5 },
+    room6: { name: "Időcsapda", roomId: 6 },
+    room7: { name: "KódX Szoba", roomId: 7 },
+    room8: { name: "Kalandok Kamrája", roomId: 8 },
+    room9: { name: "Titkok Labirintusa", roomId: 9 }
 };
 
 const Booking = () => {
     const { id } = useParams();
-    const trackName = tracks[id];
+    const track = tracks[id];
+    const trackName = track ? track.name : null;
+    const roomId = track ? track.roomId : null;
     const [selectedDate, setSelectedDate] = useState("");
     const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedTime, setSelectedTime] = useState("");
@@ -36,12 +38,14 @@ const Booking = () => {
 
         const getUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/Users/${token}`);
+                const userName = localStorage.getItem("username");
+                const response = await axios.get(`http://localhost:5000/Users/GetByUserName/${token},${userName}`);
                 setUserData({
                     realName: response.data.realName,
                     email: response.data.email,
                     phone: response.data.phone,
-                    teamId: response.data.teamId
+                    teamId: response.data.teamId,
+                    nickName: response.data.nickName,
                 });
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
@@ -49,16 +53,18 @@ const Booking = () => {
             }
         };
         getUserData();
-    }, [navigate, token]);
+    }, [navigate, token]); // userName eltávolítva a függőségi tömbből
 
     useEffect(() => {
-        if (selectedDate) {
-            axios.get(`http://localhost:5000/Booking/${token}`, {
-                params: { day: selectedDate, roomId: id }
+        if (selectedDate && roomId) {
+            axios.get(`http://localhost:5000/Booking/CheckBooking${token}`, {
+                params: { day: selectedDate, roomId: roomId }
             })
                 .then(response => {
-                                     
-                    const bookedTimes = response.data.map(booking => booking.time);
+                    const bookedTimes = response.data.map(booking => {
+                        const date = new Date(booking.bookingDate);
+                        return `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                    });
                     const freeTimes = allTimes.filter(time => !bookedTimes.includes(time));
                     setAvailableTimes(freeTimes);
                     setSelectedTime("");
@@ -68,7 +74,7 @@ const Booking = () => {
                     setAvailableTimes([]);
                 });
         }
-    }, [selectedDate, id, token]);
+    }, [selectedDate, roomId, token]);
 
     const handleBooking = async (e) => {
         e.preventDefault();
@@ -77,18 +83,17 @@ const Booking = () => {
             return;
         }
         const bookingData = {
-            roomId: parseInt(id),
+            roomId: roomId,
             bookingDate: selectedDate + "T" + selectedTime + ":00.000Z",
             teamId: userData.teamId || null,
-            comment: teamName || null
         };
         try {
-            const response = await axios.post(`http://localhost:5000/Booking/${token}`, bookingData);
-            alert(response.data.message);
+            const response = await axios.post(`http://localhost:5000/Booking/NewBooking${token}`, bookingData);
+            alert(response.data);
             navigate("/bookings");
         } catch (error) {
             console.error("Hiba a foglalás során:", error);
-            alert(error.response?.data?.message || "Hiba történt a foglalás során.");
+            alert(error.response?.data || "Hiba történt a foglalás során.");
         }
     };
 
@@ -116,15 +121,40 @@ const Booking = () => {
                         <input type="text" value={trackName} readOnly />
 
                         <label>Dátum:</label>
-                        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
+                        <input
+                            type="date"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                            required
+                        />
 
-                        <label>Idősáv:</label>
-                        <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} required>
-                            <option value="">Válassz időpontot</option>
-                            {availableTimes.map((time) => (
-                                <option key={time} value={time}>{time}</option>
-                            ))}
-                        </select>
+                        {selectedDate && (
+                            <>
+                                <label>Válassz egy idősávot:</label>
+                                <div className="time-slots">
+                                    {allTimes.map(time => {
+                                        const isBooked = !availableTimes.includes(time);
+                                        const isSelected = selectedTime === time;
+                                        return (
+                                            <div
+                                                key={time}
+                                                className={`time-slot ${isBooked ? "booked" : isSelected ? "selected" : "available"}`}
+                                                onClick={() => !isBooked && setSelectedTime(time)}
+                                            >
+                                                {time} {isBooked ? "(Foglalt)" : ""}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </>
+                        )}
+                        <p>Név: {userData.realName}</p>
+
+                        <p>Felhasználónév: {userData.nickName}</p>
+
+                        <p>Telefonszám: {userData.phone}</p>
+
+                        <p>Email cím: {userData.email}</p>
 
                         <label>Csapatnév:</label>
                         <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
