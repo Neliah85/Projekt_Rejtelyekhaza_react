@@ -14,6 +14,7 @@ const Profile = () => {
         userId: 0,
     });
     const [password, setPassword] = useState("");
+    const [successMessage, setSuccessMessage] = useState(""); // Új state a sikeres üzenethez
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const userName = localStorage.getItem("userName");
@@ -35,6 +36,8 @@ const Profile = () => {
                     teamId: response.data.teamId,
                     nickName: response.data.nickName,
                     userId: response.data.userId,
+                    hash: response.data.hash,
+                    salt: response.data.salt,
                 });
             } catch (error) {
                 console.error("Hiba a felhasználói adatok lekérésekor:", error);
@@ -53,10 +56,15 @@ const Profile = () => {
                 password: password || undefined,
             };
 
-            await axios.put(`http://localhost:5000/Users/${token}`, updatedData); 
-            alert("Profil sikeresen frissítve!");
+            // Módosított PUT kérés a Swagger dokumentáció alapján
+            await axios.put(`http://localhost:5000/Users/${token},${userData.userId}`, updatedData);
+            setSuccessMessage("Profil sikeresen frissítve!"); // Sikeres üzenet beállítása
+            setTimeout(() => {
+                setSuccessMessage(""); // Üzenet eltüntetése 3 másodperc után
+            }, 3000);
         } catch (error) {
             console.error("Hiba a profil frissítésekor:", error);
+            setSuccessMessage(""); // Sikeres üzenet törlése hiba esetén
         }
     };
 
@@ -80,6 +88,8 @@ const Profile = () => {
 
                     <label>Új jelszó (opcionális):</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+                    {successMessage && <p className="success-message">{successMessage}</p>} {/* Sikeres üzenet megjelenítése */}
 
                     <button type="submit">Mentés</button>
                 </form>

@@ -1448,3 +1448,43 @@ p {
       .icon-button.delete {
         color: red;
       }
+      .bookings-table {
+        width: 80%; /* A táblázat szélessége, állítsd be igény szerint */
+        margin: 20px auto; /* Középre igazítás vízszintesen */
+        border-collapse: collapse; /* Szimpla vonalak az cellák körül */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Szép árnyék a táblázat körül */
+      }
+      
+      .bookings-table th, .bookings-table td {
+        border: 1px solid #ddd; /* Vékony szürke vonalak a cellák körül */
+        padding: 8px;
+        text-align: left; /* Szöveg igazítása balra az oszlopokban */
+      }
+      
+      .bookings-table th {
+        background-color: #2b2a2a; /* Világos szürke háttér a fejléchez */
+        font-weight: bold; /* Félkövér betűk a fejléchez */
+        text-align: center; /* Fejléc szöveg középre */
+      }
+      
+      .bookings-table tbody tr:nth-child(even) {
+        background-color: #4d4c4c; /* Második sorok világosabb háttérrel a jobb olvashatóságért */
+      }
+      
+      .bookings-table button {
+        padding: 6px 10px;
+        border: none;
+        background-color: #dc3545; /* Piros háttér a törlés gombhoz */
+        color: white;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .bookings-table button:hover {
+        background-color: #c82333; /* Sötétebb piros háttér hover-re */
+      }
+      
+      .bookings-table td:last-child {
+        text-align: center; /* A törlés gomb középre igazítása */
+      }
